@@ -6,17 +6,59 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
+import { grey } from "@material-ui/core/colors";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: grey,
+    secondary: {
+      main: "#f44336"
+    }
+  },
+  cssLabel: {
+    "&$cssFocused": {
+      color: "#212121"
+    }
+  },
+  cssFocused: {},
+  cssUnderline: {
+    "&:after": {
+      borderBottomColor: "#212121"
+    }
+  }
+});
 
 const styles = theme => ({
-  button: { margin: theme.spacing.unit }
+  button: {
+    margin: theme.spacing.unit
+  },
+  subtext: {
+    paddingBottom: "2%"
+  },
+  text: {
+    paddingTop: "3%",
+    paddingBottom: "3%"
+  },
+  email: {
+    color: "#212121"
+  }
 });
 
 class LoginPage extends React.Component {
   state = {
-    open: false
+    open: false,
+    email: "",
+    password: "",
+    dataInvalid: false
   };
 
   handleClickOpen = () => {
@@ -27,8 +69,63 @@ class LoginPage extends React.Component {
     this.setState({ open: false });
   };
 
+  handleLogin = e => {
+    console.log("object");
+    var compare = false;
+    const users = [
+      {
+        email: "prashantraj18198@gmail.com",
+        password: "123"
+      },
+      {
+        email: "kevin@notawesome.com",
+        password: "kevinnotawesome"
+      }
+    ];
+    for (var i = 0; i < users.length; i++) {
+      // console.log(users[i]['email']);
+      if (users[i]["email"] == this.state.email) {
+        if (users[i]["password"] == this.state.password) {
+          console.log("valid user");
+          compare = true;
+          this.state.dataInvalid = false;
+        } else {
+          console.log("invalid");
+          compare = false;
+          this.state.dataInvalid = true;
+        }
+      }
+    }
+    var functionRan = false;
+    if (compare) {
+      functionRan = this.handleClose();
+    }
+  };
+
+  handleChange = e => {
+    /* console.log(e.target.id);
+    console.log(e.target.value); */
+    this.setState(
+      {
+        [e.target.id]: e.target.value
+      },
+      () => {
+        console.log(this.state.email, this.state.password);
+      }
+    );
+  };
+
   render() {
     const { classes } = this.props;
+    const InvalidUserMessage = null;
+    if (this.state.dataInvalid) {
+      InvalidUserMessage = (
+        <Typography error>
+          No user found with the same email and password. Please try again!
+        </Typography>
+      );
+    }
+
     return (
       <div>
         <Button
@@ -50,22 +147,75 @@ class LoginPage extends React.Component {
             </Typography>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>To resume your journey login here</DialogContentText>
-            <TextField
+            <DialogContentText className={classes.subtext}>
+              To resume your journey login here
+              {InvalidUserMessage}
+            </DialogContentText>
+            {/* <InputLabel
+              htmlFor="custom-css-standard-input"
+              classes={{
+                root: classes.cssLabel,
+                focused: classes.cssFocused
+              }}
+            >
+              Custom CSS
+            </InputLabel>
+            <Input
+              id="custom-css-standard-input"
+              classes={{
+                underline: classes.cssUnderline
+              }}
+            /> */}
+            <MuiThemeProvider theme={theme}>
+              <TextField
+                className={[classes.margin, classes.text].join(" ")}
+                label="Email"
+                id="email"
+                autoFocus
+                fullWidth
+                type="email"
+                onChange={this.handleChange}
+              />
+              <TextField
+                className={[classes.margin, classes.text].join(" ")}
+                label="Password"
+                id="password"
+                type="password"
+                autoFocus
+                fullWidth
+                onChange={this.handleChange}
+              />
+            </MuiThemeProvider>
+            {/* <TextField
               autoFocus
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  underline: classes.cssUnderline
+                }
+              }}
               margin="dense"
               id="name"
               label="Email Address"
               type="email"
               fullWidth
-            />
+            /> */}
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.handleClose} color="default">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Subscribe
+            <Button
+              // onClick={this.handleClose}
+              color="default"
+              onClick={this.handleLogin}
+            >
+              Login
             </Button>
           </DialogActions>
         </Dialog>
