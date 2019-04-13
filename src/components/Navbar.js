@@ -6,7 +6,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import red from "@material-ui/core/colors/red";
 /* eslint-disable react/jsx-handler-names */
 import Menu from "@material-ui/core/Menu";
@@ -31,14 +30,18 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import Drawer from "./Drawer";
+import LoginPage from "./LoginPage";
+import AccountMenu from "./AccountMenu";
+
+// TODO: add popover to buttons
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#212121',
+      main: "#212121"
     },
     secondary: {
-      main: "#f44336"
+      main: "#fff"
     }
   },
   shadows: ["none"]
@@ -109,8 +112,17 @@ const styles = {
   }
 };
 
+const loadLoginPage = () => {
+  console.log("loadLoginPage run");
+  return <LoginPage LoginButtonClicked={true} />;
+};
+
 function ButtonAppBar(props) {
   const { classes } = props;
+  let clicked = false;
+  if (clicked) {
+    console.log("clicked");
+  }
   return (
     <div className={classes.root}>
       <MuiThemeProvider theme={theme}>
@@ -143,7 +155,8 @@ function ButtonAppBar(props) {
             >
               <ContactSupport />
             </IconButton>
-            <PopupState variant="popover" popupId="demo-popup-menu">
+            <AccountMenu />
+            {/* <PopupState variant="popover" popupId="demo-popup-menu">
               {popupState => (
                 <React.Fragment>
                   <IconButton
@@ -155,14 +168,15 @@ function ButtonAppBar(props) {
                     <AccountCircle />
                   </IconButton>
                   <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={popupState.close} selected>
+                    <MenuItem onClick={doSomething() {
+                      let some = popupState.close}} selected>
                       Sign Up
                     </MenuItem>
                     <MenuItem onClick={popupState.close}>Login</MenuItem>
                   </Menu>
                 </React.Fragment>
               )}
-            </PopupState>
+            </PopupState> */}
           </Toolbar>
         </AppBar>
       </MuiThemeProvider>

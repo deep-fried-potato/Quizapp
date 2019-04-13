@@ -16,6 +16,10 @@ import Typography from "@material-ui/core/Typography";
 import { grey } from "@material-ui/core/colors";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
+import { MenuItem } from "@material-ui/core";
+
+//TODO: Add login success as a snackbar
+//TODO: add login fail as a snackbar
 
 const theme = createMuiTheme({
   palette: {
@@ -56,6 +60,7 @@ const styles = theme => ({
 class LoginPage extends React.Component {
   state = {
     open: false,
+    validEmail: true,
     email: "",
     password: "",
     dataInvalid: false
@@ -63,10 +68,18 @@ class LoginPage extends React.Component {
 
   handleClickOpen = () => {
     this.setState({ open: true });
+    // let some = this.props.handleMenuClose();
+  };
+
+  handleClickLogin = props => {
+    this.setState({ open: true });
   };
 
   handleClose = () => {
     this.setState({ open: false });
+    if (this.props.buttonClicked == "login") {
+      return this.props.handleMenuClose();
+    }
   };
 
   handleLogin = e => {
@@ -115,9 +128,82 @@ class LoginPage extends React.Component {
     );
   };
 
+  handleEmail = e => {
+    this.handleChange(e);
+    if (
+      e.target.value.match(
+        /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      )
+    ) {
+      console.log("valid email");
+      if (!this.state.validEmail) {
+        this.setState({
+          validEmail: true
+        });
+      }
+    } else {
+      console.log("invalid email");
+      if (this.state.validEmail) {
+        this.setState({
+          validEmail: false
+        });
+      }
+    }
+  };
+  // componentDidMount() {
+  //   if (this.props.buttonClicked == "login") {
+  //     console.log("component mounted");
+  //     this.setState({
+  //       open: true
+  //     });
+  //   }
+  // }
+
+  ButtonVal = () => {
+    return <div />;
+  };
+
   render() {
     const { classes } = this.props;
-    const InvalidUserMessage = null;
+    console.log(this.props.buttonClicked);
+    var getStartedButton = null;
+    if (this.props.buttonClicked == "getStarted") {
+      console.log("getStarted condition true");
+      getStartedButton = (
+        <Button
+          variant="outlined"
+          color="inherit"
+          className={classes.button}
+          onClick={this.handleClickOpen}
+        >
+          Resume Learning
+        </Button>
+      );
+    }
+    if (this.props.buttonClicked == "login") {
+      console.log("login condition true");
+      getStartedButton = (
+        <MenuItem
+          variant="outlined"
+          color="inherit"
+          className={classes.button}
+          onClick={this.handleClickLogin}
+        >
+          Login
+        </MenuItem>
+      );
+    }
+    // else if (this.props.buttonClicked == 'login') {
+    //   console.log('login button');
+    //   this.setState({
+    //     open: true,
+    //   })
+    // }
+    if (this.props.LoginButtonClicked) {
+      var open = this.handleClickOpen;
+    }
+
+    var InvalidUserMessage = null;
     if (this.state.dataInvalid) {
       InvalidUserMessage = (
         <Typography error>
@@ -128,14 +214,7 @@ class LoginPage extends React.Component {
 
     return (
       <div>
-        <Button
-          variant="outlined"
-          color="inherit"
-          className={classes.button}
-          onClick={this.handleClickOpen}
-        >
-          Start Learning
-        </Button>
+        {getStartedButton}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -151,30 +230,16 @@ class LoginPage extends React.Component {
               To resume your journey login here
               {InvalidUserMessage}
             </DialogContentText>
-            {/* <InputLabel
-              htmlFor="custom-css-standard-input"
-              classes={{
-                root: classes.cssLabel,
-                focused: classes.cssFocused
-              }}
-            >
-              Custom CSS
-            </InputLabel>
-            <Input
-              id="custom-css-standard-input"
-              classes={{
-                underline: classes.cssUnderline
-              }}
-            /> */}
             <MuiThemeProvider theme={theme}>
               <TextField
                 className={[classes.margin, classes.text].join(" ")}
+                error={!this.state.validEmail}
                 label="Email"
                 id="email"
                 autoFocus
                 fullWidth
                 type="email"
-                onChange={this.handleChange}
+                onChange={this.handleEmail}
               />
               <TextField
                 className={[classes.margin, classes.text].join(" ")}
@@ -186,25 +251,6 @@ class LoginPage extends React.Component {
                 onChange={this.handleChange}
               />
             </MuiThemeProvider>
-            {/* <TextField
-              autoFocus
-              InputLabelProps={{
-                classes: {
-                  root: classes.cssLabel,
-                  focused: classes.cssFocused
-                }
-              }}
-              InputProps={{
-                classes: {
-                  underline: classes.cssUnderline
-                }
-              }}
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
-            /> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="default">

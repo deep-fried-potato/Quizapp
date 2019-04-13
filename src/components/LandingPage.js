@@ -94,7 +94,7 @@ const LandingPage = props => {
             paddingTop: "3%"
           }}
         >
-          QUIZAPP
+        QUIZAPP
         </div>
         <div
           style={{
@@ -105,7 +105,8 @@ const LandingPage = props => {
             fontSize: "25px",
             fontWeight: "100",
             color: "#212121",
-            paddingTop: "2%"
+            paddingTop: "2%",
+            wordBreak: "break-all"
           }}
           onMouseOver={hide}
           onMouseOut={show}
@@ -117,7 +118,7 @@ const LandingPage = props => {
             paddingTop: "3%"
           }}
         >
-          <LoginPage />
+          <LoginPage buttonClicked="getStarted" />
         </div>
         <div
           style={{
