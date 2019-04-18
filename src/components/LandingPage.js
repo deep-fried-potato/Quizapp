@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
+import backgroundImg from "./images/bible-biblia-book-bindings-1112048.jpg";
 import logo from "./images/LogoBlackTransparent.png";
 import LoginPage from "./LoginPage";
 
@@ -43,8 +44,13 @@ const theme = createMuiTheme({
   },
   shadows: ["none"]
 });
-
+let url = "./images/bible-biblia-book-bindings-1112048.jpg";
 const styles = theme => ({
+  root: {
+    backgroundImage: "url(" + url + ")",
+    backgroundSize: "cover",
+    overflow: "hidden"
+  },
   button: { margin: theme.spacing.unit }
 });
 const loadAnimation = () => {
@@ -58,6 +64,7 @@ const LandingPage = props => {
   return (
     <MuiThemeProvider theme={theme}>
       <div
+        className={classes.root}
         onLoad={loadAnimation}
         style={{
           textAlign: "center"
@@ -83,6 +90,7 @@ const LandingPage = props => {
         </figure>
         <div
           id="logo"
+          className="tracking-in-expand"
           style={{
             fontFamily: "Roboto",
             textAlign: "center",
@@ -94,7 +102,7 @@ const LandingPage = props => {
             paddingTop: "3%"
           }}
         >
-        QUIZAPP
+          QUAZAPP
         </div>
         <div
           style={{

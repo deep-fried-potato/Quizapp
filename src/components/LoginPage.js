@@ -17,7 +17,7 @@ import { grey } from "@material-ui/core/colors";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import { MenuItem } from "@material-ui/core";
-
+import axios from "axios";
 //TODO: Add login success as a snackbar
 //TODO: add login fail as a snackbar
 
@@ -59,6 +59,8 @@ const styles = theme => ({
 
 class LoginPage extends React.Component {
   state = {
+    loginTrySuccess: false,
+    loginTryFail: false,
     open: false,
     validEmail: true,
     email: "",
@@ -82,10 +84,61 @@ class LoginPage extends React.Component {
     }
   };
 
+  getData = (email, password) => {
+    /* var data = new FormData();
+    console.log(email, password);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    }; */
+    const url = "https://www.reqres.in/api/login/";
+    var self = this;
+    axios
+      .post(url, {
+        email: email,
+        password: password
+      })
+      .then(function(response) {
+        self.completeLogin(response);
+        // self.completeLogin.bind(response);
+        console.log(response.status);
+        if (response.status == 200) {
+          console.log("object");
+        } else {
+          console.log("Login unsuccessfull");
+          this.setState({
+            loginTryFail: true
+          });
+        }
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  completeLogin = response => {
+    if (response.status == 200) {
+      console.log("Login successfull");
+      this.setState(
+        {
+          loginTrySuccess: true
+        },
+        () => {
+          console.log(this.state);
+        }
+      );
+      this.handleClose();
+    }
+  };
+
   handleLogin = e => {
+    this.getData(this.state.email, this.state.password);
+
     console.log("object");
     var compare = false;
-    const users = [
+    /* const users = [
       {
         email: "prashantraj18198@gmail.com",
         password: "123"
@@ -112,7 +165,7 @@ class LoginPage extends React.Component {
     var functionRan = false;
     if (compare) {
       functionRan = this.handleClose();
-    }
+    } */
   };
 
   handleChange = e => {
