@@ -20,6 +20,7 @@ import { MenuItem } from "@material-ui/core";
 import MaskedInput from "react-text-mask";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import axios from "axios";
 //TODO: Add login success as a snackbar
 //TODO: add login fail as a snackbar
 
@@ -81,6 +82,39 @@ class SignUpPage extends React.Component {
     }
   };
 
+  register = () => {
+    const url = "https://www.reqres.in/api/register";
+    var self = this;
+    axios
+      .post(url, {
+        email: this.state.user.email,
+        password: this.state.user.password
+      })
+      .then(function(response) {
+        self.completeRegister(response);
+        // self.completeLogin.bind(response);
+        console.log(response.status);
+        if (response.status == 201) {
+          console.log("object");
+        } else {
+          console.log("Sign up unsuccessfull");
+          this.setState({
+            loginTryFail: true
+          });
+        }
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  completeRegister = response => {
+    if (response.status == 201) {
+      console.log("Sign up successfull");
+    }
+  };
+
   handleOpen = () => {
     this.setState({
       open: true
@@ -110,11 +144,17 @@ class SignUpPage extends React.Component {
 
   handleSignUp = e => {
     console.log(this.state.user);
-    if(!this.state.ageError && this.state.validEmail && this.state.validName && this.state.validUsername && (this.state.user.password == this.state.user.passwordConf)) {
-      console.log('form valid');
-    }
-    else {
-      console.log('form invalid')
+    this.register();
+    if (
+      !this.state.ageError &&
+      this.state.validEmail &&
+      this.state.validName &&
+      this.state.validUsername &&
+      this.state.user.password == this.state.user.passwordConf
+    ) {
+      console.log("form valid");
+    } else {
+      console.log("form invalid");
     }
   };
 
