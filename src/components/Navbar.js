@@ -38,7 +38,7 @@ import AccountMenu from "./AccountMenu";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#212121"
+      main: "#fff"
     },
     secondary: {
       main: "#fff"
@@ -50,7 +50,8 @@ const theme = createMuiTheme({
 const styles = {
   root: {
     flexGrow: 1,
-    padding: "35px"
+    padding: "35px",
+    backgroundColor: "transparent"
   },
   grow: {
     flexGrow: 1
@@ -86,6 +87,7 @@ const styles = {
   searchIcon: {
     width: theme.spacing.unit * 9,
     height: "100%",
+    color:'#fff',
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
@@ -97,6 +99,7 @@ const styles = {
     width: "100%"
   },
   inputInput: {
+    color:'secondary',
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
@@ -126,7 +129,7 @@ function ButtonAppBar(props) {
   return (
     <div className={classes.root}>
       <MuiThemeProvider theme={theme}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" style={{ backgroundColor: "transparent" }}>
           <Toolbar>
             <Drawer />
             {/* <Typography variant="h6" color="inherit" className={classes.grow}>
@@ -135,48 +138,28 @@ function ButtonAppBar(props) {
             <div className={classes.grow} />
             <div className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon />
+                <SearchIcon color='secondary'/>
               </div>
               <InputBase
                 placeholder="Search…"
+                color='secondary'
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput
+                  input: classes.inputInput,
                 }}
               />
             </div>
-            <IconButton className="" color="inherit" aria-label="Home" href="/">
+            <IconButton className="" color="secondary" aria-label="Home" href="/">
               <Home />
             </IconButton>
             <IconButton
               className=""
-              color="inherit"
+              color="secondary"
               aria-label="ContactSupport"
             >
               <ContactSupport />
             </IconButton>
             <AccountMenu />
-            {/* <PopupState variant="popover" popupId="demo-popup-menu">
-              {popupState => (
-                <React.Fragment>
-                  <IconButton
-                    className={classes.accountButton}
-                    color="inherit"
-                    aria-label="Menu"
-                    {...bindTrigger(popupState)}
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={doSomething() {
-                      let some = popupState.close}} selected>
-                      Sign Up
-                    </MenuItem>
-                    <MenuItem onClick={popupState.close}>Login</MenuItem>
-                  </Menu>
-                </React.Fragment>
-              )}
-            </PopupState> */}
           </Toolbar>
         </AppBar>
       </MuiThemeProvider>
