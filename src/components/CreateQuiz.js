@@ -1,216 +1,227 @@
-import React from "react";
-import "./LandingPage.css";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
+import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import backgroundImg from "./images/thumb-1920-306638.jpg";
-import logo from "./images/LogoWhiteTransparent.png";
-import LoginPage from "./LoginPage";
-import BackgroundImage from "react-background-image-loader";
-import Navbar from "./Navbar";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import update from "react-addons-update"; // ES6
 
-const wiseWords = {
-  quote:
-    "An app designed to make you better at understanding what you have learned"
-};
-
-const show = () => {
-  // const logo = document.getElementById("logo");
-  const footer = document.getElementById("footer");
-  // logo.classList.add("animated", "fadeOut", 'slow');
-  footer.classList.add("animated", "fadeOut", "slow");
-};
-
-const hide = () => {
-  // const logo = document.getElementById("logo");
-  const footer = document.getElementById("footer");
-  // logo.classList.remove("animated", "fadeOut", 'slow');
-  footer.classList.remove("animated", "fadeOut", "slow");
-  // logo.classList.add("animated", "fadeIn", 'slow');
-  footer.classList.add("animated", "fadeIn", "slow");
-};
-
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: {
-      main: "#fff"
-    }
-  },
-  shadows: ["none"]
-});
-let url = "./images/bible-biblia-book-bindings-1112048.jpg";
 const styles = theme => ({
   root: {
-    backgroundImage: "url(" + url + ")",
-    backgroundSize: "cover",
-    overflow: "hidden"
+    width: "100%",
+    backgroundColor: theme.palette.background.paper
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: "50%"
+  },
+  textFieldAnswer: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: "30%"
   },
   button: { margin: theme.spacing.unit }
 });
-const loadAnimation = () => {
-  const logo = document.getElementById("logo");
-  logo.classList.add("animated", "fadeIn", "slower");
-};
 
-const LandingPage = props => {
-  const { classes } = props;
-  const sectionStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    overflow: "auto",
-    width: "100%",
-    height:
-      "auto" /* 
-    marginLeft: "-10px",
-    marginRight: "-10px",
-    marginBottom: "-20px", */,
-    backgroundImage: `url(${backgroundImg})`
+class CreateQuiz extends Component {
+  state = {
+    quiz: [
+      {
+        id: 0,
+        question: "Something",
+        options: ["some", "thing", "to"],
+        answer: ""
+      },
+
+      {
+        id: 1,
+        question: "Something2",
+        options: ["some2", "thing2", "to2"],
+        answer: ""
+      }
+    ]
   };
-  return (
-    <MuiThemeProvider theme={theme}>
-      <img
-        src={backgroundImg}
-        className="kenburns-right"
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          overflow: "hidden",
-          zIndex: "-1",
-          marginTop: "-10px",
-          marginLeft: "-30px",
-          width: "102.5%",
-          height: "auto"
-        }}
-      />
-      <div
-        className={`${classes.root} back`}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0
-        }}
-        onLoad={loadAnimation}
-      >
-        <Navbar />
-        <figure
-          id="logo"
-          style={{
-            width: "200px",
-            height: "120px",
-            display: "inline-block",
-            paddingTop: "2%"
-          }}
-        >
-          <img
-            src={logo}
-            alt="Logo"
-            style={{
-              height: "auto",
-              width: "100%"
-            }}
-          />
-        </figure>
-        <div
-          id="logo"
-          className="tracking-in-expand"
-          style={{
-            fontFamily: "Roboto",
-            textAlign: "center",
-            fontSize: "40px",
-            fontWeight: "300",
-            color: "#fff",
-            letterSpacing: "6px",
-            paddingLeft: "10px",
-            paddingTop: "3%"
-          }}
-        >
-          QUAZAPP
-        </div>
-        <div
-          style={{
-            fontFamily: "Roboto",
-            textAlign: "center",
-            paddingLeft: "35%",
-            paddingRight: "35%",
-            fontSize: "25px",
-            fontWeight: "100",
-            color: "#fff",
-            paddingTop: "2%",
-            wordBreak: "break-all"
-          }}
-          onMouseOver={hide}
-          onMouseOut={show}
-        >
-          {wiseWords.quote}
-        </div>
-        <div
-          style={{
-            paddingTop: "3%"
-          }}
-        >
-          <LoginPage buttonClicked="getStarted" />
-        </div>
-        <div
-          style={{
-            paddingTop: "5%",
-            color: "#fff"
-          }}
-          id="footer"
-        >
-          <span
-            style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: 200,
-              fontSize: "15px",
-              paddingRight: "3px"
-            }}
-          >
-            | be
-          </span>
-          <span
-            style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: "normal",
-              fontSize: "15px",
-              paddingRight: "3px"
-            }}
-          >
-            smart
-          </span>
-          <span
-            style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: 200,
-              fontSize: "15px"
-            }}
-          >
-            at learning |
-          </span>
-        </div>
-      </div>
-    </MuiThemeProvider>
-  );
-};
 
-LandingPage.propTypes = {
+  quiz = () => {
+    let questions = [];
+    for (let i = 0; i < this.state.quiz.length; i++) {
+      let answers = [];
+      for (let j = 0; j < this.state.quiz[i].options.length; j++) {
+        console.log(this.state.quiz[i].options[j]);
+      }
+    }
+  };
+
+  handleAddQuestion = e => {
+    let questions = this.state.quiz;
+    let totalQues = this.state.quiz.length;
+    console.log(totalQues);
+    let sampleQuestion = {
+      id: totalQues, // change id when adding question
+      question: "SomeQuestion",
+      options: ["A", "B"],
+      answer: ""
+    };
+    this.setState(prevState => ({
+      quiz: [...prevState.quiz, sampleQuestion]
+    }));
+  };
+
+  handleAddOption = id => {
+    console.log(
+      id
+    ); /* 
+    var options = [...this.state.quiz[id].options, 'Another Option'];
+    // options.push("Another Option");
+    console.log(options);
+    this.state.quiz[id].options = options;
+    this.forceUpdate(); */
+    let quiz = this.state.quiz.slice();
+    quiz[id].options.push("Another Option");
+    this.setState({
+      quiz: quiz
+    });
+  };
+
+  handleAnswerChange = e => {
+    console.log(e.target.value, e.target, e.target.id);
+    let quiz = this.state.quiz.slice();
+    quiz[e.target.name].answer = e.target.value;
+    this.setState({
+      quiz: quiz
+    });
+  };
+
+  handleQuestionChange = (e) => {
+    console.log(e.target.value, e.target.id);
+    let quiz = this.state.quiz.slice();
+    quiz[e.target.id].question = e.target.value;
+    this.setState({
+      quiz:quiz
+    })
+  }
+
+  handleOptionChange = (questionId, optionId, e)=> {
+    console.log(questionId, optionId, e.target.value);
+    let quiz = this.state.quiz.slice();
+    quiz[questionId].options[optionId] = e.target.value;
+    this.setState({
+      quiz:quiz
+    }, () => {
+      console.log(this.state.quiz)
+    })
+  }
+
+  render() {
+    const { classes } = this.props;
+    let num = 0;
+    const data = this.state.quiz;
+    const question = data.map((dataElement, num) => (
+      <div>
+        <TextField
+          id={num}
+          onChange={this.handleQuestionChange}
+          label={["Question", num + 1].join(" ")}
+          multiline
+          defaultValue={dataElement.question}
+          rows="2"
+          placeholder="What's an orange?"
+          className={classes.textField}
+          margin="normal"
+        />
+        {dataElement.options.map((op, opNum) => (
+          <div>
+            <TextField
+              id={opNum}
+              onChange={(e)=>{
+                this.handleOptionChange(num, opNum, e)
+              }}
+              label={["Option", opNum + 1].join(" ")}
+              defaultValue={op}
+              placeholder="What's an orange?"
+              className={classes.textFieldAnswer}
+              margin="normal"
+            />
+          </div>
+        ))}
+        <FormControl className={classes.formControl}>
+          <InputLabel htmlFor="answer">Answer</InputLabel>
+          <Select
+            id={num}
+            name={num}
+            value={dataElement.answer}
+            onChange={this.handleAnswerChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {dataElement.options.map((op, opNum) => (
+              <MenuItem value={op} className={classes.textFieldAnswer}>
+                {op}
+              </MenuItem>
+            ))}
+            {/* 
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem> */}
+          </Select>
+        </FormControl>
+        <br />
+        <Button
+          id={dataElement.id}
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={() => this.handleAddOption(dataElement.id)}
+        >
+          Add Option
+        </Button>
+      </div>
+    ));
+
+    {
+      /* 
+        <li id={num}>
+        {dataElement.question}
+        <li>{dataElement.options}</li>
+        </li> */
+    }
+    console.log(data);
+    return (
+      <div>
+        {question}
+        {/* {this.quiz} */}
+        {/* <TextField
+          id="outlined-multiline-static"
+          label="Multiline"
+          multiline
+          rows="2"
+          placeholder="What's an orange?"
+          className={classes.textField}
+          margin="normal"
+        /> */}
+        <br />
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={this.handleAddQuestion}
+        >
+          Add Question
+        </Button>
+      </div>
+    );
+  }
+}
+
+CreateQuiz.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(LandingPage);
+export default withStyles(styles)(CreateQuiz);
