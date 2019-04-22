@@ -25,7 +25,7 @@ const theme = createMuiTheme({
   palette: {
     primary: grey,
     secondary: {
-      main: "#f44336"
+      main: "#fff"
     }
   },
   cssLabel: {
@@ -225,7 +225,7 @@ class LoginPage extends React.Component {
       getStartedButton = (
         <Button
           variant="outlined"
-          color="inherit"
+          color="secondary"
           className={classes.button}
           onClick={this.handleClickOpen}
         >

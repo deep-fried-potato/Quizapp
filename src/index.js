@@ -8,6 +8,7 @@ import InputField from "./components/InputField";
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage";
 import QuizPage from "./components/QuizPage";
+import CreateQuiz from './components/CreateQuiz';
 import "./styles.css";
 import Helmet from "react-helmet";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -23,11 +24,12 @@ class App extends React.Component {
         <Helmet bodyAttributes={{ style: "background-color : #fff" }} />
         <BrowserRouter>
           <div className="Navbar">
-            <Navbar />
+            {/* <Navbar /> */}
           </div>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/quiz" component={QuizPage} />
+          <Route exact path="/createquiz" component={CreateQuiz} />
           {/* <LandingPage /> */}
         </BrowserRouter>
 

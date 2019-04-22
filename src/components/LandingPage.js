@@ -10,9 +10,11 @@ import {
 } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
-import backgroundImg from "./images/bible-biblia-book-bindings-1112048.jpg";
-import logo from "./images/LogoBlackTransparent.png";
+import backgroundImg from "./images/thumb-1920-306638.jpg";
+import logo from "./images/LogoWhiteTransparent.png";
 import LoginPage from "./LoginPage";
+import BackgroundImage from "react-background-image-loader";
+import Navbar from "./Navbar";
 
 const wiseWords = {
   quote:
@@ -39,7 +41,7 @@ const theme = createMuiTheme({
   palette: {
     primary: blue,
     secondary: {
-      main: "#f44336"
+      main: "#fff"
     }
   },
   shadows: ["none"]
@@ -60,116 +62,147 @@ const loadAnimation = () => {
 
 const LandingPage = props => {
   const { classes } = props;
-
+  const sectionStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    overflow: "auto",
+    width: "100%",
+    height: "auto",/* 
+    marginLeft: "-10px",
+    marginRight: "-10px",
+    marginBottom: "-20px", */
+    backgroundImage: `url(${backgroundImg})`
+  };
   return (
-    <MuiThemeProvider theme={theme}>
-      <div
-        className={classes.root}
-        onLoad={loadAnimation}
-        style={{
-          textAlign: "center"
-        }}
-      >
-        <figure
-          id="logo"
+      <MuiThemeProvider theme={theme}>
+      <img src={backgroundImg} 
+      className='kenburns-right'
+      style={{
+        position:'fixed',
+        top:0,
+        right:0,
+        bottom:0,
+        overflow:'hidden',
+        zIndex: '-1',
+        marginTop: '-10px',
+        marginLeft: '-30px',
+        width: '102.5%',
+        height: 'auto'
+      }}></img>
+        <div
+          className={`${classes.root} back`}
           style={{
-            width: "200px",
-            height: "120px",
-            display: "inline-block",
-            paddingTop: "2%"
+            position:'fixed',
+            top: 0,
+            left:0,
+            right:0,
           }}
+          onLoad={loadAnimation}
         >
-          <img
-            src={logo}
-            alt="Logo"
+          <Navbar />
+          <figure
+            id="logo"
             style={{
-              height: "auto",
-              width: "100%"
-            }}
-          />
-        </figure>
-        <div
-          id="logo"
-          className="tracking-in-expand"
-          style={{
-            fontFamily: "Roboto",
-            textAlign: "center",
-            fontSize: "40px",
-            fontWeight: "300",
-            color: "#212121",
-            letterSpacing: "6px",
-            paddingLeft: "10px",
-            paddingTop: "3%"
-          }}
-        >
-          QUAZAPP
-        </div>
-        <div
-          style={{
-            fontFamily: "Roboto",
-            textAlign: "center",
-            paddingLeft: "35%",
-            paddingRight: "35%",
-            fontSize: "25px",
-            fontWeight: "100",
-            color: "#212121",
-            paddingTop: "2%",
-            wordBreak: "break-all"
-          }}
-          onMouseOver={hide}
-          onMouseOut={show}
-        >
-          {wiseWords.quote}
-        </div>
-        <div
-          style={{
-            paddingTop: "3%"
-          }}
-        >
-          <LoginPage buttonClicked="getStarted" />
-        </div>
-        <div
-          style={{
-            paddingTop: "5%",
-            color: "#212121"
-          }}
-          id="footer"
-        >
-          <span
-            style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: 200,
-              fontSize: "15px",
-              paddingRight: "3px"
+              width: "200px",
+              height: "120px",
+              display: "inline-block",
+              paddingTop: "2%"
             }}
           >
-            | be
-          </span>
-          <span
+            <img
+              src={logo}
+              alt="Logo"
+              style={{
+                height: "auto",
+                width: "100%"
+              }}
+            />
+          </figure>
+          <div
+            id="logo"
+            className="tracking-in-expand"
             style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: "normal",
-              fontSize: "15px",
-              paddingRight: "3px"
+              fontFamily: "Roboto",
+              textAlign: "center",
+              fontSize: "40px",
+              fontWeight: "300",
+              color: "#fff",
+              letterSpacing: "6px",
+              paddingLeft: "10px",
+              paddingTop: "3%"
             }}
           >
-            smart
-          </span>
-          <span
+            QUAZAPP
+          </div>
+          <div
             style={{
-              fontFamily: "Titillium Web",
-              fontStyle: "normal",
-              fontWeight: 200,
-              fontSize: "15px"
+              fontFamily: "Roboto",
+              textAlign: "center",
+              paddingLeft: "35%",
+              paddingRight: "35%",
+              fontSize: "25px",
+              fontWeight: "100",
+              color: "#fff",
+              paddingTop: "2%",
+              wordBreak: "break-all"
+            }}
+            onMouseOver={hide}
+            onMouseOut={show}
+          >
+            {wiseWords.quote}
+          </div>
+          <div
+            style={{
+              paddingTop: "3%"
             }}
           >
-            at learning |
-          </span>
+            <LoginPage buttonClicked="getStarted" />
+          </div>
+          <div
+            style={{
+              paddingTop: "5%",
+              color: "#fff"
+            }}
+            id="footer"
+          >
+            <span
+              style={{
+                fontFamily: "Titillium Web",
+                fontStyle: "normal",
+                fontWeight: 200,
+                fontSize: "15px",
+                paddingRight: "3px"
+              }}
+            >
+              | be
+            </span>
+            <span
+              style={{
+                fontFamily: "Titillium Web",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "15px",
+                paddingRight: "3px"
+              }}
+            >
+              smart
+            </span>
+            <span
+              style={{
+                fontFamily: "Titillium Web",
+                fontStyle: "normal",
+                fontWeight: 200,
+                fontSize: "15px"
+              }}
+            >
+              at learning |
+            </span>
+          </div>
         </div>
-      </div>
-    </MuiThemeProvider>
+      </MuiThemeProvider>
   );
 };
 
