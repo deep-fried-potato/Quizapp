@@ -18,6 +18,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import { MenuItem } from "@material-ui/core";
 import axios from "axios";
+import { Redirect } from 'react-router-dom'
 //TODO: Add login success as a snackbar
 //TODO: add login fail as a snackbar
 
@@ -84,15 +85,16 @@ class LoginPage extends React.Component {
     }
   };
 
+
   getData = (email, password) => {
     /* var data = new FormData();
-    console.log(email, password);
+    //console.log(email, password);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     }; */
-    const url = "https://www.reqres.in/api/login/";
+    const url = "http://localhost:8000/api/auth/login";
     var self = this;
     axios
       .post(url, {
@@ -102,31 +104,34 @@ class LoginPage extends React.Component {
       .then(function(response) {
         self.completeLogin(response);
         // self.completeLogin.bind(response);
-        console.log(response.status);
+        //console.log(response.status);
         if (response.status == 200) {
-          console.log("object");
+          //console.log("object");
         } else {
-          console.log("Login unsuccessfull");
+          //console.log("Login unsuccessfull");
           this.setState({
             loginTryFail: true
           });
         }
-        console.log(response);
+        //console.log(response);
       })
       .catch(function(error) {
-        console.log(error);
+        //console.log(error);
       });
   };
 
   completeLogin = response => {
     if (response.status == 200) {
-      console.log("Login successfull");
+      //console.log("Login successfull");
       this.setState(
         {
           loginTrySuccess: true
         },
         () => {
-          console.log(this.state);
+          //console.log(this.state);
+          console.log(response.data.token)
+          localStorage.setItem('auth-token',response.data.token)
+
         }
       );
       this.handleClose();
@@ -136,7 +141,7 @@ class LoginPage extends React.Component {
   handleLogin = e => {
     this.getData(this.state.email, this.state.password);
 
-    console.log("object");
+    //console.log("object");
     var compare = false;
     /* const users = [
       {
@@ -176,7 +181,7 @@ class LoginPage extends React.Component {
         [e.target.id]: e.target.value
       },
       () => {
-        console.log(this.state.email, this.state.password);
+        //console.log(this.state.email, this.state.password);
       }
     );
   };
@@ -205,7 +210,7 @@ class LoginPage extends React.Component {
   };
   // componentDidMount() {
   //   if (this.props.buttonClicked == "login") {
-  //     console.log("component mounted");
+  //     //console.log("component mounted");
   //     this.setState({
   //       open: true
   //     });
@@ -218,10 +223,13 @@ class LoginPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props.buttonClicked);
+    //console.log(this.props.buttonClicked);
+    if(this.state.loginTrySuccess){
+      return <Redirect to='/profile' />
+    }
     var getStartedButton = null;
     if (this.props.buttonClicked == "getStarted") {
-      console.log("getStarted condition true");
+      //console.log("getStarted condition true");
       getStartedButton = (
         <Button
           variant="outlined"
@@ -234,7 +242,7 @@ class LoginPage extends React.Component {
       );
     }
     if (this.props.buttonClicked == "login") {
-      console.log("login condition true");
+      //console.log("login condition true");
       getStartedButton = (
         <MenuItem
           variant="outlined"
@@ -247,7 +255,7 @@ class LoginPage extends React.Component {
       );
     }
     // else if (this.props.buttonClicked == 'login') {
-    //   console.log('login button');
+    //   //console.log('login button');
     //   this.setState({
     //     open: true,
     //   })
