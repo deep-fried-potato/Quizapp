@@ -42,6 +42,9 @@ class Profile extends React.Component{
       <div>{this.state.userinfo.userid},{this.state.userinfo.username},{this.state.userinfo.email}</div>
       <h2>Your Courses</h2>
       <div>{course_container_list}</div>
+      <p>
+        {this.state.userinfo.isTeacher ? (<a href="/createcourse">Create course</a>):(<a href="/joincourse">Join a course</a>)}
+      </p>
       </div>
     )
   }

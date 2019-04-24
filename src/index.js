@@ -12,6 +12,8 @@ import CreateQuiz from './components/CreateQuiz';
 import QuizResults from './components/QuizResults';
 import Profile from './components/Profile';
 import CoursePage from './components/CoursePage';
+import CreateCourse from './components/CreateCourse';
+import JoinCourse from './components/JoinCourse';
 import "./styles.css";
 import Helmet from "react-helmet";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -36,6 +38,9 @@ class App extends React.Component {
           <Route path="/quizresults/:quizid" component={QuizResults} />
           <Route exact path="/profile/" component={Profile} />
           <Route path="/courses/:cid" component={CoursePage} />
+          <Route exact path="/createcourse" component={CreateCourse} />
+          <Route exact path="/joincourse" component={JoinCourse} />
+
           {/* <LandingPage /> */}
         </BrowserRouter>
 
