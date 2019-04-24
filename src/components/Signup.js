@@ -146,7 +146,7 @@ class Signup extends Component {
         email: this.state.email,
         password: this.state.password
       });
-      // this.sendData("localhost:8000", this.state);
+      this.sendData("http://localhost:8000/api/auth/register", this.state);
     }
   };
 

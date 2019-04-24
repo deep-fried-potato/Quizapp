@@ -21,6 +21,7 @@ import MaskedInput from "react-text-mask";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
+import { Redirect } from 'react-router-dom'
 //TODO: Add login success as a snackbar
 //TODO: add login fail as a snackbar
 
@@ -66,6 +67,7 @@ const styles = theme => ({
 
 class SignUpPage extends React.Component {
   state = {
+    signUpSuccess:false,
     open: false,
     ageError: false,
     validUsername: true,
@@ -83,19 +85,19 @@ class SignUpPage extends React.Component {
   };
 
   register = () => {
-    const url = "https://www.reqres.in/api/register";
+    const url = "http://localhost:8000/api/auth/register";
     var self = this;
     axios
-      .post(url, {
-        email: this.state.user.email,
-        password: this.state.user.password
-      })
+      .post(url, this.state.user)
       .then(function(response) {
         self.completeRegister(response);
         // self.completeLogin.bind(response);
         console.log(response.status);
-        if (response.status == 201) {
+        if (response.status == 200) {
           console.log("object");
+          localStorage.setItem('auth-token',response.data.token)
+          self.setState({
+            signUpSuccess: true})
         } else {
           console.log("Sign up unsuccessfull");
           this.setState({
@@ -260,6 +262,9 @@ class SignUpPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    if(this.state.signUpSuccess){
+      return <Redirect to='/profile' />
+    }
     return (
       <div>
         <MenuItem
@@ -362,14 +367,14 @@ class SignUpPage extends React.Component {
                 style={{
                   color: "#616161"
                 }}
-              > 
+              >
                  <Switch
                   checked={this.state.user.isTeacher}
                   color="secondary"
                   id="isTeacher"
                   onChange={this.handleIsTeacher}
                   className={classes.switch}
-                /> 
+                />
               </Typography> */}
             </MuiThemeProvider>
           </DialogContent>
