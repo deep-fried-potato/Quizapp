@@ -36,6 +36,7 @@ class Course extends React.Component{
       <div>
       <h1>Welcome to course {this.state.courseinfo.cname}</h1>
       <h2>Instructor: {this.state.courseinfo.name} </h2>
+      <p>JoinKey: {this.state.courseinfo.joinKey}</p>
       <p>Email : {this.state.courseinfo.email}</p>
       <p>Quizzes: </p>
       <div>{quiz_container_list}</div>
