@@ -60,8 +60,15 @@ const loadAnimation = () => {
   logo.classList.add("animated", "fadeIn", "slower");
 };
 
-const LandingPage = props => {
-  const { classes } = props;
+class LandingPage extends React.Component{
+ 
+  componentDidMount() {
+    var navLogo = document.getElementById('navLogo');
+    navLogo.innerHTML= '';
+  }
+
+  render() {
+  const { classes } = this.props;
   const sectionStyle = {
     position: 'absolute',
     top: 0,
@@ -89,8 +96,7 @@ const LandingPage = props => {
         zIndex: '-1',
         marginTop: '-10px',
         marginLeft: '-30px',
-        width: '102.5%',
-        height: 'auto'
+        objectFit: 'cover'
       }}></img>
         <div
           className={`${classes.root} back`}
@@ -147,7 +153,6 @@ const LandingPage = props => {
               fontWeight: "100",
               color: "#fff",
               paddingTop: "2%",
-              wordBreak: "break-all"
             }}
             onMouseOver={hide}
             onMouseOut={show}
@@ -204,7 +209,9 @@ const LandingPage = props => {
         </div>
       </MuiThemeProvider>
   );
-};
+  }
+}
+
 
 LandingPage.propTypes = {
   classes: PropTypes.object.isRequired
