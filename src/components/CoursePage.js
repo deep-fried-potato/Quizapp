@@ -12,13 +12,19 @@ class QuizContainer extends React.Component{
 class Course extends React.Component{
   state={
     quizlist:[],
-    courseinfo:[]
+    courseinfo:[],
+    userinfo:[]
   }
   componentDidMount(){
     var token = localStorage.getItem("auth-token");
     var config = {
       headers:{'x-access-token':token}
     }
+    axios.get("http://localhost:8000/api/auth/me",config).then(res=>{
+      const userinfo = res.data[0]
+      console.log(userinfo)
+      this.setState({userinfo})
+    })
     axios.get("http://localhost:8000/quiz/listquizzes/" + this.props.match.params.cid,config).then(res=>{
       const quizlist = res.data
       this.setState({quizlist})
@@ -30,7 +36,10 @@ class Course extends React.Component{
   }
   render(){
     var quiz_container_list = this.state.quizlist.map((quiz_object)=>(
-      <a href={"/quiz"} ><QuizContainer data={quiz_object} /></a>
+      <div>
+      <a href={this.state.userinfo.isTeacher ? ("/viewquiz/"+quiz_object.quizid):("/startquiz/"+quiz_object.quizid)} ><QuizContainer data={quiz_object} /></a>
+      <a href={"/quizresults/"+quiz_object.quizid}><p>View Results</p></a>
+      </div>
     ))
     return(
       <div>
