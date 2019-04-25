@@ -24,7 +24,7 @@ class QuizResults extends React.Component{
     var config={
       headers:{'x-access-token':token}
     };
-    axios.get(`http://localhost:8000/quiz/quizresults/1`,config).then(res=>{
+    axios.get(`http://localhost:8000/quiz/quizresults/`+this.props.match.params.quizid,config).then(res=>{
       const resultlist = res.data
       this.setState({resultlist})
     })
