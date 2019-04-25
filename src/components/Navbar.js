@@ -32,6 +32,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import Drawer from "./Drawer";
 import LoginPage from "./LoginPage";
 import AccountMenu from "./AccountMenu";
+import Logo from "./images/LogoBlackTransparent.png";
 
 // TODO: add popover to buttons
 
@@ -41,7 +42,7 @@ const theme = createMuiTheme({
       main: "#fff"
     },
     secondary: {
-      main: "#fff"
+      main: "#212121"
     }
   },
   shadows: ["none"]
@@ -87,7 +88,7 @@ const styles = {
   searchIcon: {
     width: theme.spacing.unit * 9,
     height: "100%",
-    color:'#fff',
+    color: "#fff",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
@@ -99,7 +100,7 @@ const styles = {
     width: "100%"
   },
   inputInput: {
-    color:'secondary',
+    color: "secondary",
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
@@ -129,27 +130,49 @@ function ButtonAppBar(props) {
   return (
     <div className={classes.root}>
       <MuiThemeProvider theme={theme}>
-        <AppBar position="fixed" style={{ backgroundColor: "transparent" }}>
+        <AppBar position="fixed">
           <Toolbar>
             <Drawer />
+            <div id="navLogo">
+              <img
+                src={Logo}
+                style={{
+                  marginLeft: '-10px',
+                  width: "50px",
+                  height: "auto"
+                }}
+              />
+            </div>
+            <div
+              id="pagetitle"
+              style={{
+                paddingLeft: "20px",
+                textAlign: "center"
+              }}
+            />
             {/* <Typography variant="h6" color="inherit" className={classes.grow}>
               <span className={classes.logo}> Quizapp!</span>
             </Typography> */}
             <div className={classes.grow} />
             <div className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon color='secondary'/>
+                <SearchIcon color="secondary" />
               </div>
               <InputBase
                 placeholder="Search…"
-                color='secondary'
+                color="secondary"
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
               />
             </div>
-            <IconButton className="" color="secondary" aria-label="Home" href="/">
+            <IconButton
+              className=""
+              color="secondary"
+              aria-label="Home"
+              href="/"
+            >
               <Home />
             </IconButton>
             <IconButton

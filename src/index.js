@@ -23,13 +23,14 @@ class App extends React.Component {
     const root = document.getElementById("root");
     root.classList.add("bg");
   }
+
   render() {
     return (
       <div className="App">
         <Helmet bodyAttributes={{ style: "background-color : #fff" }} />
         <BrowserRouter>
           <div className="Navbar">
-            {/* <Navbar /> */}
+            <Navbar />
           </div>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={LoginPage} />

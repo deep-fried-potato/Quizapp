@@ -12,6 +12,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Pagination from "material-ui-flat-pagination";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Navbar from "./Navbar";
+import "./QuizPage.css";
+import "../animate.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,8 +34,25 @@ const theme = createMuiTheme({
 
 const styles = theme => ({
   root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper
+    textAlign: "center"
+  },
+  paper: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 1,
+    paddingBottom: theme.spacing.unit * 1
+  },
+  outsidePaper: {
+    display: "inline-block",
+    paddingBottom: "2%",
+    width: "75%"
+  },
+  options: {
+    paddingTop: theme.spacing.unit * 1,
+    paddingBottom: theme.spacing.unit * 1
+  },
+  group: {
+    marginLeft: "10px",
+    margin: `${theme.spacing.unit}px 0`
   }
 });
 
@@ -36,6 +60,7 @@ class SelectedListItem extends React.Component {
   state = {
     selectedIndex: 1,
     offset: 0,
+    title: "General Knowledge Quiz",
     qna: [
       {
         id: "1",
@@ -60,7 +85,19 @@ class SelectedListItem extends React.Component {
         options: ["1", "2", "3", "4"],
         answer: "4"
       }
-    ]
+    ],
+    answers: []
+  };
+
+  componentDidMount = () => {
+    var answers = this.state.answers;
+    answers = Array(this.state.qna.length).map((value, index) => {
+      return "";
+    });
+    console.log(answers);
+    this.setState({
+      answers: answers
+    });
   };
 
   handleListItemClick = (event, index) => {
@@ -75,59 +112,141 @@ class SelectedListItem extends React.Component {
     this.setState({ offset });
   }
 
+  handleChange = e => {
+    const options = this.state.qna[this.state.offset].options;
+    console.log(e.target.value);
+    console.log(this.state.answers);
+    //answer number
+    console.log(
+      options.findIndex(option => {
+        return option == e.target.value;
+      }),
+      this.state.offset
+    );
+    var ansNo = options.findIndex(option => {
+      return option == e.target.value;
+    })
+    var answers = this.state.answers.slice();
+    answers[this.state.offset] = ansNo;
+    this.setState({
+      answers: answers
+    },()=>{
+      console.log(this.state.answers)
+    })
+  };
+
   render() {
     const { classes } = this.props;
+    const questionNum = this.state.offset;
     const question = this.state.qna[this.state.offset].question;
     console.log(question);
     const options = this.state.qna[this.state.offset].options;
     console.log(options);
-    const OptionList = options.map(option => (
-      <ListItem
-        button
-        selected={false}
-        key={option.toString()}
-        //onClick={event => this.handleListItemClick(event, 2)}
+    var id = 0;
+    const optionList = (
+      <RadioGroup
+        aria-label="Gender"
+        name="gender1"
+        className={classes.group}
+        value={this.state.value}
+        onChange={this.handleChange}
       >
-        <ListItemText primary={option} />
-      </ListItem>
+        {options.map((op, opNum) => (
+          <FormControlLabel
+            value={op}
+            id={opNum}
+            control={<Radio />}
+            label={op}
+          />
+        ))}
+      </RadioGroup>
+    );
+    const OptionList = options.map((option, id) => (
+      <span
+        id={id}
+        onClick={event => {
+          console.log(questionNum, event.target.id);
+        }}
+      >
+        {/* 
+        <ListItem
+          id={id}
+          button
+          selected={false}
+          key={option.toString()}
+          //onClick={event => this.handleListItemClick(event, 2)}
+        >
+          <ListItemText primary={option} />
+        </ListItem> */}
+      </span>
     ));
     console.log(this.state.offset);
     return (
-      <div className={classes.root}>
+      <div
+        className={classes.root}
+        style={{
+          backgroundColor: "#e0e0e0",
+          position: "absolute",
+          top: 0,
+          width: "100%",
+          height: "100%"
+        }}
+      >
         <Typography
-          variant="h4"
+          variant="caption"
+          className="bounceIn"
           style={{
             textAlign: "center",
-            paddingTop: "5%",
-            paddingBottom: "5%"
+            paddingTop: "7%",
+            paddingBottom: "2%",
+            fontSize: "16px"
           }}
         >
-          {question}
+          {this.state.title}
         </Typography>
-        <List
-          component="nav"
+        <div className={classes.outsidePaper}>
+          <Paper className={classes.paper} elevation={1}>
+            <Typography
+              variant="h4"
+              style={{
+                textAlign: "center",
+                paddingTop: "5%",
+                paddingBottom: "5%"
+              }}
+            >
+              {question}
+            </Typography>
+          </Paper>
+        </div>
+        <div
           style={{
-            textAlign: "center"
+            width: "50%",
+            position: "relative",
+            height: "auto",
+            margin: "0 auto",
+            padding: "10px"
           }}
         >
-          {OptionList}
-          {/* <ListItem
-            button
-            selected={this.state.selectedIndex === 3}
-            onClick={event => this.handleListItemClick(event, 3)}
-          >
-            <ListItemText primary="Spam" />
-          </ListItem */}
-        </List>{" "}
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <Pagination
-            limit={1}
-            offset={this.state.offset}
-            total={this.state.qna.length}
-            onClick={(e, offset) => this.handleClick(e, offset)}
-          />
-        </MuiThemeProvider>
+          <Paper>{optionList}</Paper>
+        </div>
+        <div
+          style={{
+            top: "10%",
+            display: "inline-block",
+            marginLeft: "0%",
+            paddingTop: "5%"
+          }}
+        >
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            <Pagination
+              limit={1}
+              offset={this.state.offset}
+              total={this.state.qna.length}
+              onClick={(e, offset) => this.handleClick(e, offset)}
+            />
+          </MuiThemeProvider>
+        </div>
       </div>
     );
   }
