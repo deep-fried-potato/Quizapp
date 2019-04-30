@@ -21,6 +21,12 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: "50%"
   },
+  title: {
+    paddingTop: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: "25%"
+  },
   textFieldAnswer: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -31,6 +37,7 @@ const styles = theme => ({
 
 class CreateQuiz extends Component {
   state = {
+    title: "",
     quiz: [
       {
         id: 0,
@@ -47,6 +54,11 @@ class CreateQuiz extends Component {
       }
     ]
   };
+
+  componentDidMount() {
+    var pagetitle = document.getElementById('pagetitle');
+    pagetitle.innerHTML = 'Create Quiz'
+  }
 
   quiz = () => {
     let questions = [];
@@ -98,26 +110,39 @@ class CreateQuiz extends Component {
     });
   };
 
-  handleQuestionChange = (e) => {
+  handleQuestionChange = e => {
     console.log(e.target.value, e.target.id);
     let quiz = this.state.quiz.slice();
     quiz[e.target.id].question = e.target.value;
     this.setState({
-      quiz:quiz
-    })
-  }
+      quiz: quiz
+    });
+  };
 
-  handleOptionChange = (questionId, optionId, e)=> {
+  handleOptionChange = (questionId, optionId, e) => {
     console.log(questionId, optionId, e.target.value);
     let quiz = this.state.quiz.slice();
     quiz[questionId].options[optionId] = e.target.value;
-    this.setState({
-      quiz:quiz
-    }, () => {
-      console.log(this.state.quiz)
-    })
-  }
+    this.setState(
+      {
+        quiz: quiz
+      },
+      () => {
+        console.log(this.state.quiz);
+      }
+    );
+  };
 
+  handleTitleChange = e => {
+    this.setState(
+      {
+        title: e.target.value
+      },
+      () => {
+        console.log(this.state.title);
+      }
+    );
+  };
   render() {
     const { classes } = this.props;
     let num = 0;
@@ -139,8 +164,8 @@ class CreateQuiz extends Component {
           <div>
             <TextField
               id={opNum}
-              onChange={(e)=>{
-                this.handleOptionChange(num, opNum, e)
+              onChange={e => {
+                this.handleOptionChange(num, opNum, e);
               }}
               label={["Option", opNum + 1].join(" ")}
               defaultValue={op}
@@ -194,7 +219,21 @@ class CreateQuiz extends Component {
     }
     console.log(data);
     return (
-      <div>
+      <div style={{
+        backgroundColor: "#e0e0e0",
+        position: 'absolute',
+        width: "100.5%",
+        marginTop: '-15px',
+        marginLeft: '-15px',
+      }}>
+        <TextField
+          id="title"
+          onChange={this.handleTitleChange}
+          label="Quiz Title"
+          placeholder="General Knowledge Quiz - 1"
+          className={classes.title}
+          margin="normal"
+        />
         {question}
         {/* {this.quiz} */}
         {/* <TextField
