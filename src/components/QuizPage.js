@@ -123,11 +123,12 @@ class SelectedListItem extends React.Component {
       }),
       this.state.offset
     );
+    var answer = e.target.value;
     var ansNo = options.findIndex(option => {
       return option == e.target.value;
     })
     var answers = this.state.answers.slice();
-    answers[this.state.offset] = ansNo;
+    answers[this.state.offset] = answer;
     this.setState({
       answers: answers
     },()=>{
@@ -148,7 +149,7 @@ class SelectedListItem extends React.Component {
         aria-label="Gender"
         name="gender1"
         className={classes.group}
-        value={this.state.value}
+        value={this.state.answers[this.state.offset]}
         onChange={this.handleChange}
       >
         {options.map((op, opNum) => (

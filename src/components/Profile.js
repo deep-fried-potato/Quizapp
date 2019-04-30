@@ -1,5 +1,21 @@
 import React from "react";
 import axios from "axios";
+import JoinCourse from "./JoinCourse";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+
+const styles = theme => ({
+  close: {
+    padding: theme.spacing.unit / 2
+  },
+  paper: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 1,
+    paddingBottom: theme.spacing.unit * 1
+  }
+});
 
 class CourseContainer extends React.Component {
   render() {
@@ -31,11 +47,14 @@ class Profile extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     var course_container_list = this.state.courses.map(course_object => (
       <a href={"/courses/" + course_object.cid}>
         <CourseContainer data={course_object} />
       </a>
     ));
+
     return (
       <div
         style={{
@@ -46,26 +65,87 @@ class Profile extends React.Component {
           top: 0,
           bottom: 0,
           marginLeft: "-9px",
-          objectFit: "cover"
+          objectFit: "cover",
+          textAlign: "center"
         }}
       >
-        <h1>Profile</h1>
-        <div>
-          {this.state.userinfo.userid},{this.state.userinfo.username},
-          {this.state.userinfo.email}
+        <div
+          style={{
+            paddingTop: "6%",
+            width: "50%",
+            display: "inline-block"
+          }}
+        >
+          <Paper className={classes.paper} elevation={1}>
+            <Typography
+              component="h2"
+              variant="display3"
+              gutterBottom
+              style={{
+                paddingTop: "40px"
+              }}
+            >
+              Profile
+            </Typography>
+            <Typography
+              component="h2"
+              variant="display1"
+              gutterBottom
+              style={{
+                fontSize: "18px",
+                paddingRight: "80px"
+              }}
+              align="right"
+            >
+              PrashantRaj
+            </Typography>
+            <Typography
+              component="h2"
+              variant="display1"
+              gutterBottom
+              style={{
+                paddingTop: "0px",
+                fontSize: "14px",
+                paddingRight: "80px"
+              }}
+              align="right"
+            >
+              prashantraj18198@gmail.com
+            </Typography>
+            {/* <div>
+              {this.state.userinfo.username},{this.state.userinfo.email}
+            </div> */}
+            <Typography
+              component="h2"
+              variant="display1"
+              gutterBottom
+              style={{
+                paddingTop: "20px",
+                fontWeight: "lighter",
+                paddingLeft: "80px"
+              }}
+              align="left"
+            >
+              Your Courses
+            </Typography>
+
+            <div>{course_container_list}</div>
+            <p>
+              {this.state.userinfo.isTeacher ? (
+                <a href="/createcourse">Create course</a>
+              ) : (
+                <JoinCourse />
+              )}
+            </p>
+          </Paper>
         </div>
-        <h2>Your Courses</h2>
-        <div>{course_container_list}</div>
-        <p>
-          {this.state.userinfo.isTeacher ? (
-            <a href="/createcourse">Create course</a>
-          ) : (
-            <a href="/joincourse">Join a course</a>
-          )}
-        </p>
       </div>
     );
   }
 }
 
-export default Profile;
+Profile.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Profile);
