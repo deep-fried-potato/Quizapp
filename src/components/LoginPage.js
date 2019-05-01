@@ -94,7 +94,7 @@ class LoginPage extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     }; */
-    const url = "http://localhost:8000/api/auth/login";
+    const url = "http://10.0.36.104:8000/api/auth/login";
     var self = this;
     axios
       .post(url, {

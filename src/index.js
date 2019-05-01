@@ -25,7 +25,7 @@ class App extends React.Component {
     const root = document.getElementById("root");
     root.classList.add("bg");
   }
-
+  //10.0.36.104
   render() {
     return (
       <div className="App">

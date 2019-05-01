@@ -11,11 +11,11 @@ class QuizInfo extends React.Component{
     var config = {
       headers:{'x-access-token':token}
     }
-    axios.get("http://localhost:8000/api/auth/me",config).then(res=>{
+    axios.get("http://10.0.36.104:8000/api/auth/me",config).then(res=>{
       const userinfo = res.data[0]
       this.setState({userinfo})
     })
-    axios.get("http://localhost:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
+    axios.get("http://10.0.36.104:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
       const quizdata = res.data[0]
       this.setState({quizdata})
     })

@@ -100,7 +100,7 @@ class JoinCourse extends React.Component{
 
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+        <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
           Join a course
         </Button>
         <Dialog
@@ -131,7 +131,7 @@ class JoinCourse extends React.Component{
               this.sendData()
               this.handleClose()
               }} color="primary">
-              Subscribe
+              Join
             </Button>
           </DialogActions>
         </Dialog>

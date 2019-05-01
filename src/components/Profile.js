@@ -1,10 +1,16 @@
 import React from "react";
 import axios from "axios";
 import JoinCourse from "./JoinCourse";
+import CreateCourse from "./CreateCourse";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import CourseContainer from "./CourseContainer";
 
 const styles = theme => ({
   close: {
@@ -16,12 +22,6 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit * 1
   }
 });
-
-class CourseContainer extends React.Component {
-  render() {
-    return <div>{this.props.data.cname}</div>;
-  }
-}
 
 class Profile extends React.Component {
   state = {
@@ -35,12 +35,12 @@ class Profile extends React.Component {
     var config = {
       headers: { "x-access-token": token }
     };
-    axios.get("http://localhost:8000/api/auth/me", config).then(res => {
+    axios.get("http://10.0.36.104:8000/api/auth/me", config).then(res => {
       const userinfo = res.data[0];
       console.log(userinfo);
       this.setState({ userinfo });
     });
-    axios.get("http://localhost:8000/course/listgroups", config).then(res => {
+    axios.get("http://10.0.36.104:8000/course/listgroups", config).then(res => {
       const courses = res.data;
       this.setState({ courses });
     });
@@ -55,15 +55,23 @@ class Profile extends React.Component {
       </a>
     ));
 
+    const courses = [
+      { cid: 0, cname: "DBMS" },
+      { cid: 1, cname: "Machine Learning" }
+    ];
+    const courseList = courses.map(course => (
+      <a href={"/courses/" + course.cid}>
+        <CourseContainer data={course} />
+      </a>
+    ));
     return (
       <div
         style={{
           backgroundColor: "#e0e0e0",
           position: "absolute",
           width: "100%",
-          height: "100%",
+          minHeight: '100%',
           top: 0,
-          bottom: 0,
           marginLeft: "-9px",
           objectFit: "cover",
           textAlign: "center"
@@ -97,7 +105,7 @@ class Profile extends React.Component {
               }}
               align="right"
             >
-              PrashantRaj
+              {this.state.userinfo.username}
             </Typography>
             <Typography
               component="h2"
@@ -110,7 +118,7 @@ class Profile extends React.Component {
               }}
               align="right"
             >
-              prashantraj18198@gmail.com
+              {this.state.userinfo.email}
             </Typography>
             {/* <div>
               {this.state.userinfo.username},{this.state.userinfo.email}
@@ -120,19 +128,20 @@ class Profile extends React.Component {
               variant="display1"
               gutterBottom
               style={{
-                paddingTop: "20px",
+                marginTop: '-50px',
+                paddingTop: "-20px",
                 fontWeight: "lighter",
-                paddingLeft: "80px"
+                paddingLeft: "80px",
+                paddingBottom: '20px'
               }}
               align="left"
             >
               Your Courses
             </Typography>
-
             <div>{course_container_list}</div>
             <p>
               {this.state.userinfo.isTeacher ? (
-                <a href="/createcourse">Create course</a>
+                <CreateCourse />
               ) : (
                 <JoinCourse />
               )}
@@ -145,6 +154,10 @@ class Profile extends React.Component {
 }
 
 Profile.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+CourseContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
