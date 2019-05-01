@@ -68,17 +68,17 @@ class Profile extends React.Component {
       <div
         style={{
           backgroundColor: "#e0e0e0",
+          position: 'absolute',
           width: "102%",
           minHeight: "100%",
           top: 0,
-          marginTop: "-20px",
           marginLeft: "-10px",
           textAlign: "center"
         }}
       >
         <div
           style={{
-            paddingTop: "2%",
+            paddingTop: "7%",
             width: "75%",
             display: 'inline-block',
             textAlign: 'center'
