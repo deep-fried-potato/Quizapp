@@ -171,7 +171,7 @@ function ButtonAppBar(props) {
               className=""
               color="secondary"
               aria-label="Home"
-              href="/"
+              href="/profile"
             >
               <Home />
             </IconButton>

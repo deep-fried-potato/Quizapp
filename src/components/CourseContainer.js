@@ -43,7 +43,7 @@ class CourseContainer extends React.Component {
           textAlign: "center"
         }}
       >
-        <span style={{ display: "inline-block", paddingBottom: "30px" }}>
+        <span style={{ display: "inline", paddingBottom: "30px" }}>
           <Card className={classes.card}>
             <CardContent>
               <Typography
