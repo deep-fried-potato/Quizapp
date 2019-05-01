@@ -10,6 +10,7 @@ import LoginPage from "./components/LoginPage";
 import QuizPage from "./components/QuizPage";
 import CreateQuiz from './components/CreateQuiz';
 import QuizResults from './components/QuizResults';
+import CourseResults from './components/CourseResults';
 import Profile from './components/Profile';
 import CoursePage from './components/CoursePage';
 import CreateCourse from './components/CreateCourse';
@@ -44,6 +45,7 @@ class App extends React.Component {
           <Route exact path="/createcourse" component={CreateCourse} />
           <Route path="/viewquiz/:quizid" component={ViewQuiz} />
           <Route path="/startquiz/:quizid" component={StartQuiz} />
+          <Route path="/courseresults/:courseid" component={CourseResults} />
 
           {/* <LandingPage /> */}
         </BrowserRouter>
