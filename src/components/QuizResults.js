@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import {Bar} from 'react-chartjs-2'
 
 class ResultContainer extends React.Component{
   getPercentile(markslist,current_mark){
@@ -21,8 +22,13 @@ class ResultContainer extends React.Component{
 class QuizResults extends React.Component{
 
   state = {
-    resultlist: [],
-    markslist:[]
+    resultlist: [{
+      marks:0
+    }],
+    markslist:[],
+    studentdata:[],
+    teacherdata:[],
+    userinfo:[]
   }
 
 
@@ -32,23 +38,69 @@ class QuizResults extends React.Component{
     var config={
       headers:{'x-access-token':token}
     };
+    axios.get("http://10.0.36.104:8000/api/auth/me", config).then(res => {
+      const userinfo = res.data[0];
+      console.log(userinfo);
+      this.setState({ userinfo });
+    });
     axios.get(`http://10.0.36.104:8000/quiz/quizresults/`+this.props.match.params.quizid,config).then(res=>{
-      const resultlist = res.data
+      var resultlist = res.data
       this.setState({resultlist})
+      console.log(resultlist)
     })
     axios.get(`http://10.0.36.104:8000/quiz/quizmarksall/`+this.props.match.params.quizid,config).then(res=>{
       const markslist = res.data
       this.setState({markslist})
       console.log(markslist)
+
     })
+
   }
   render(){
+    const studentdata={
+      labels: ['Your Score', 'Class Average', 'Highest', 'Lowest'],
+      datasets: [
+        {
+          label: 'Class marks',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data: [this.state.resultlist[0].marks,this.state.markslist.reduce((a,b) => a + b, 0) / this.state.markslist.length,Math.max(...this.state.markslist),Math.min(...this.state.markslist)]
+        }
+      ]
+    }
+    const teacherdata={
+      labels: ['Class Average', 'Highest', 'Lowest'],
+      datasets: [
+        {
+          label: 'Class marks',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data: [this.state.markslist.reduce((a,b) => a + b, 0) / this.state.markslist.length,Math.max(...this.state.markslist),Math.min(...this.state.markslist)]
+        }
+      ]
+    }
     var result_container_list = this.state.resultlist.map((result_object)=>(
       <ResultContainer data={result_object} markslist={this.state.markslist} />
     ));
     return(
       <div>
         <h1>Results</h1>
+        <div style={{width:"75%",height:"10%"}}>
+        <Bar
+          data={this.state.userinfo.isTeacher?(teacherdata):studentdata}
+          width={50}
+          height={20}
+          options={{
+            maintainAspectRatio: true
+          }}
+          />
+        </div>
         <div>{result_container_list}</div>
       </div>
 
