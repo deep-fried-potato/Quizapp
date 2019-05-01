@@ -17,6 +17,7 @@ import CreateCourse from './components/CreateCourse';
 import JoinCourse from './components/JoinCourse';
 import ViewQuiz from './components/ViewQuiz';
 import StartQuiz from './components/StartQuiz';
+import PdfUpload from './components/PdfUpload';
 import "./styles.css";
 import Helmet from "react-helmet";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -46,6 +47,7 @@ class App extends React.Component {
           <Route path="/viewquiz/:quizid" component={ViewQuiz} />
           <Route path="/startquiz/:quizid" component={StartQuiz} />
           <Route path="/courseresults/:courseid" component={CourseResults} />
+          <Route path="/pdfupload/:courseid" component={PdfUpload} />
 
           {/* <LandingPage /> */}
         </BrowserRouter>
