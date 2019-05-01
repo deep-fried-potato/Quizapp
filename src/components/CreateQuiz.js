@@ -184,7 +184,7 @@ class CreateQuiz extends Component {
       endtime:this.state.endtime,
       coursecid:this.props.match.params.courseid
     }
-    axios.post("http://localhost:8000/quiz/createquiz",data,config).then(res=>{
+    axios.post("http://10.0.36.104:8000/quiz/createquiz",data,config).then(res=>{
       console.log("Created Sccesfuly")
     }).catch(err=>{
       console.log(err)

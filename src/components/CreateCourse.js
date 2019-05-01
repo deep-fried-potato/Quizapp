@@ -57,7 +57,7 @@ class CreateCourse extends React.Component{
     this.setState({
       snackbarOpen: true
     })
-    axios.post("http://localhost:8000/course/createcourse",data,config).then(res=>{
+    axios.post("http://10.0.36.104:8000/course/createcourse",data,config).then(res=>{
       const status_box_text = "Course has been created JoinKey : " + res.data.joinKey
       this.setState({status_box_text, snackbarOpen: true})
     })
