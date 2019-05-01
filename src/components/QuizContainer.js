@@ -10,6 +10,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import StartQuiz from './StartQuiz';
 
 const styles = theme => ({
   card: {
@@ -34,16 +35,16 @@ class QuizContainer extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div
+      <span
         style={{
           paddingTop: "15px",
           paddingBottom: "15px",
-          width: "50%",
-          textAlign: "center",
-          paddingLeft: '180px'
+          paddingLeft: "15px",
+          paddingRight: "15px",
+          textAlign: "center"
         }}
       >
-        <div style={{ display: "inline-block" }}>
+        <span style={{ display: "inline-block", paddingBottom: "30px" }}>
           <Card className={classes.card}>
             <CardContent>
               <Typography
@@ -82,8 +83,8 @@ class QuizContainer extends React.Component {
               </Button>
             </CardActions>
           </Card>
-        </div>
-      </div>
+        </span>
+      </span>
     );
   }
 }
