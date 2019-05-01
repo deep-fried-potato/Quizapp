@@ -13,7 +13,7 @@ class ResultContainer extends React.Component{
     render(){
       return(
         <div style={{margin:"20px"}}>
-          Username : {this.props.data.username} Email:{this.props.data.email}<br />Marks: {this.props.data.marks}<br />response: {this.props.data.response}<br />Percentile: {this.getPercentile(this.props.markslist,this.props.data.marks)}
+          Username : {this.props.data.username} Email:{this.props.data.email}<br />Marks: {this.props.data.marks?(this.props.data.marks):(0)}<br />response: {this.props.data.response}<br />Percentile: {this.getPercentile(this.props.markslist,this.props.data.marks)}
         </div>
       )
     }
@@ -86,6 +86,7 @@ class QuizResults extends React.Component{
       ]
     }
     var result_container_list = this.state.resultlist.map((result_object)=>(
+
       <ResultContainer data={result_object} markslist={this.state.markslist} />
     ));
     return(
