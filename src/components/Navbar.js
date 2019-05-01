@@ -134,14 +134,16 @@ function ButtonAppBar(props) {
           <Toolbar>
             <Drawer />
             <div id="navLogo">
-              <img
-                src={Logo}
-                style={{
-                  marginLeft: '-10px',
-                  width: "50px",
-                  height: "auto"
-                }}
-              />
+              <a href="/">
+                <img
+                  src={Logo}
+                  style={{
+                    marginLeft: "-10px",
+                    width: "50px",
+                    height: "auto"
+                  }}
+                />
+              </a>
             </div>
             <div
               id="pagetitle"

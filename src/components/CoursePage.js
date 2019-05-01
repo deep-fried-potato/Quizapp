@@ -108,13 +108,15 @@ class Course extends React.Component {
             textAlign: "center"
           }}
         >
-          <Paper className={classes.paper} elevation={1}>
+          <Paper className={classes.paper} elevation={1} style={{
+            paddingBottom: '10%'
+          }}>
             <Typography
               component="h2"
               variant="display3"
               gutterBottom
               style={{
-                paddingTop: "40px"
+                paddingTop: "40px",
               }}
             >
               {this.state.courseinfo.cname}
@@ -175,10 +177,25 @@ class Course extends React.Component {
                 variant="contained"
                 color="secondary"
                 href={"/createquiz/" + this.state.courseinfo.cid}
+                style={{
+                  float:'left',
+                  marginLeft: '10%'
+                }}
               >
                 Create New Quiz
               </Button>
             ) : null}
+            <Button
+                variant="contained"
+                color="secondary"
+                href={"/courseresults/" + this.state.courseinfo.cid}
+                style={{
+                  float:'right',
+                  marginRight: '10%'
+                }}
+              >
+                View Course Results
+              </Button>
           </Paper>
         </div>
       </div>
