@@ -11,6 +11,12 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import update from "react-addons-update"; // ES6
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 
 const styles = theme => ({
   root: {
@@ -36,19 +42,33 @@ const styles = theme => ({
   button: { margin: theme.spacing.unit }
 });
 
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+};
+
 class CreateQuiz extends Component {
   state = {
     title: null,
     quiz: [],
     answers: [],
-    accesskey:"",
-    starttime:null,
-    endtime:null
+    accesskey: "",
+    starttime: null,
+    endtime: null,
+    open: false
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   componentDidMount() {
-    var pagetitle = document.getElementById('pagetitle');
-    pagetitle.innerHTML = 'Create Quiz'
+    var pagetitle = document.getElementById("pagetitle");
+    pagetitle.innerHTML = "Create Quiz";
   }
 
   quiz = () => {
@@ -95,14 +115,16 @@ class CreateQuiz extends Component {
   handleAnswerChange = e => {
     console.log(e.target.value, e.target, e.target.id);
     let quiz = this.state.quiz.slice();
-    quiz[e.target.name].answer = e.target.value
-    let answers = this.state.answers
-    answers[e.target.name] = this.state.quiz[e.target.name].options.findIndex(option => {
-      return option == e.target.value;
-    })
+    quiz[e.target.name].answer = e.target.value;
+    let answers = this.state.answers;
+    answers[e.target.name] = this.state.quiz[e.target.name].options.findIndex(
+      option => {
+        return option == e.target.value;
+      }
+    );
     this.setState({
       quiz: quiz,
-      answers:answers
+      answers: answers
     });
   };
 
@@ -162,38 +184,79 @@ class CreateQuiz extends Component {
   handleEndTimeChange = e => {
     this.setState(
       {
-        endtime: e.target.value+"+05:30"
+        endtime: e.target.value + "+05:30"
       },
       () => {
         console.log(this.state.endtime);
       }
     );
   };
-  SendData = e =>{
-    console.log("Sending Data")
+
+  SendData = e => {
+    console.log("Sending Data");
     var token = localStorage.getItem("auth-token");
     var config = {
-      headers:{'x-access-token':token}
-    }
+      headers: { "x-access-token": token }
+    };
     var data = {
-      accesskey:this.state.accesskey,
-      quizname:this.state.title,
-      qdata:this.state.quiz,
-      answers:this.state.answers,
-      starttime:this.state.starttime,
-      endtime:this.state.endtime,
-      coursecid:this.props.match.params.courseid
-    }
-    axios.post("http://10.0.36.104:8000/quiz/createquiz",data,config).then(res=>{
-      console.log("Created Sccesfuly")
-    }).catch(err=>{
-      console.log(err)
-    })
-  }
+      accesskey: this.state.accesskey,
+      quizname: this.state.title,
+      qdata: this.state.quiz,
+      answers: this.state.answers,
+      starttime: this.state.starttime,
+      endtime: this.state.endtime,
+      coursecid: this.props.match.params.courseid
+    };
+    axios
+      .post("http://10.0.36.104:8000/quiz/createquiz", data, config)
+      .then(res => {
+        console.log("Created Sccesfuly");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   render() {
     const { classes } = this.props;
     let num = 0;
     const data = this.state.quiz;
+    const messagebox = (
+      <div>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={()=>{
+            this.handleClickOpen();
+            this.SendData()
+          }}
+        >
+          Create Quiz
+        </Button>
+        <Dialog
+          open={this.state.open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Confirmation"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              The quiz with title: {this.state.title} is created, click "Ok" to continue.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} href='/profile' color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
     const questiontext = data.map((dataElement, num) => (
       <div>
         <TextField
@@ -266,13 +329,16 @@ class CreateQuiz extends Component {
     }
     console.log(data);
     return (
-      <div style={{
-        backgroundColor: "#e0e0e0",
-        position: 'absolute',
-        width: "100.5%",
-        marginTop: '-15px',
-        marginLeft: '-15px',
-      }}>
+      <div
+        style={{
+          backgroundColor: "#e0e0e0",
+          position: "absolute",
+          width: "100.5%",
+          marginTop: "-15px",
+          marginLeft: "-15px",
+          minHeight: '100%'
+        }}
+      >
         <TextField
           id="title"
           onChange={this.handleTitleChange}
@@ -288,29 +354,30 @@ class CreateQuiz extends Component {
           placeholder=""
           className={classes.title}
           margin="normal"
-        /><br />
+        />
+        <br />
         <TextField
-        id="Start Time"
-        label="Start Time"
-        type="datetime-local"
-        onChange={this.handleStartTimeChange}
-        defaultValue={null}
-        className={classes.title}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <TextField
-      id="End Time"
-      label="End Time"
-      type="datetime-local"
-      onChange={this.handleEndTimeChange}
-      defaultValue={null}
-      className={classes.title}
-      InputLabelProps={{
-        shrink: true,
-      }}
-    />
+          id="Start Time"
+          label="Start Time"
+          type="datetime-local"
+          onChange={this.handleStartTimeChange}
+          defaultValue={null}
+          className={classes.title}
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
+        <TextField
+          id="End Time"
+          label="End Time"
+          type="datetime-local"
+          onChange={this.handleEndTimeChange}
+          defaultValue={null}
+          className={classes.title}
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
         {questiontext}
         {/* {this.quiz} */}
         {/* <TextField
@@ -328,17 +395,14 @@ class CreateQuiz extends Component {
           color="secondary"
           className={classes.button}
           onClick={this.handleAddQuestion}
+          style={{
+            marginBottom: '25px'
+          }}
         >
           Add Question
-        </Button><br />
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          onClick={this.SendData}
-        >
-          Create Quiz
         </Button>
+        <br />
+        {messagebox}
       </div>
     );
   }

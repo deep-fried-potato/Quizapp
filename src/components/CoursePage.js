@@ -4,7 +4,8 @@ import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import QuizContainer from './QuizContainer'
+import QuizContainer from "./QuizContainer";
+import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   close: {
@@ -72,7 +73,7 @@ class Course extends React.Component {
     const { classes } = this.props;
 
     var quiz_container_list = this.state.quizlist.map(quiz_object => (
-      <div>
+      <span>
         <a
           href={
             this.state.userinfo.isTeacher
@@ -85,30 +86,30 @@ class Course extends React.Component {
         {/* <a href={"/quizresults/" + quiz_object.quizid}>
           <p>View Results</p>
         </a> */}
-      </div>
+      </span>
     ));
     return (
       <div
         style={{
           backgroundColor: "#e0e0e0",
-          position: "absolute",
-          width: "100%",
+          width: "102%",
           minHeight: "100%",
           top: 0,
-          marginLeft: "-9px",
-          objectFit: "cover",
+          marginTop: "-20px",
+          marginLeft: "-10px",
           textAlign: "center"
         }}
       >
         <div
           style={{
-            paddingTop: "6%",
-            width: "50%",
-            display: "inline-block"
+            paddingTop: "2%",
+            width: "75%",
+            display: "inline-block",
+            textAlign: "center"
           }}
         >
           <Paper className={classes.paper} elevation={1}>
-          <Typography
+            <Typography
               component="h2"
               variant="display3"
               gutterBottom
@@ -124,10 +125,10 @@ class Course extends React.Component {
               gutterBottom
               style={{
                 fontSize: "18px",
-                paddingRight: '80px',
-                paddingTop: '20px'
+                paddingRight: "80px",
+                paddingTop: "20px"
               }}
-              align='right'
+              align="right"
             >
               Instructor: {this.state.courseinfo.name}
             </Typography>
@@ -148,12 +149,12 @@ class Course extends React.Component {
               variant="caption"
               gutterBottom
               style={{
-                marginTop: '-40px',
+                marginTop: "-40px",
                 paddingTop: "10px",
                 fontSize: "14px",
-                paddingLeft: '80px'
+                paddingLeft: "80px"
               }}
-              align='left'
+              align="left"
             >
               JoinKey: {this.state.courseinfo.joinKey}
             </Typography>
@@ -163,12 +164,21 @@ class Course extends React.Component {
               gutterBottom
               style={{
                 paddingTop: "40px",
-                fontWeight: "lighter",
+                fontWeight: "lighter"
               }}
             >
               Quizzes
             </Typography>
             <div>{quiz_container_list}</div>
+            {this.state.userinfo.isTeacher ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                href={"/createquiz/" + this.state.courseinfo.cid}
+              >
+                Create New Quiz
+              </Button>
+            ) : null}
           </Paper>
         </div>
       </div>

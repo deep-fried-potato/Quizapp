@@ -68,20 +68,20 @@ class Profile extends React.Component {
       <div
         style={{
           backgroundColor: "#e0e0e0",
-          position: "absolute",
-          width: "100%",
-          minHeight: '100%',
+          width: "102%",
+          minHeight: "100%",
           top: 0,
-          marginLeft: "-9px",
-          objectFit: "cover",
+          marginTop: "-20px",
+          marginLeft: "-10px",
           textAlign: "center"
         }}
       >
         <div
           style={{
-            paddingTop: "6%",
-            width: "50%",
-            display: "inline-block"
+            paddingTop: "2%",
+            width: "75%",
+            display: 'inline-block',
+            textAlign: 'center'
           }}
         >
           <Paper className={classes.paper} elevation={1}>
@@ -128,11 +128,11 @@ class Profile extends React.Component {
               variant="display1"
               gutterBottom
               style={{
-                marginTop: '-50px',
+                marginTop: "-50px",
                 paddingTop: "-20px",
                 fontWeight: "lighter",
                 paddingLeft: "80px",
-                paddingBottom: '20px'
+                paddingBottom: "20px"
               }}
               align="left"
             >
