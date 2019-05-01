@@ -36,6 +36,11 @@ componentDidMount(){
     this.setState({resultslist})
   })
 }
+  predictedMarks = (yourlist)=>{
+    var pred = 2*yourlist[yourlist.length -1] - yourlist[yourlist.length -2]
+    return "Predicted Marks: "+ pred
+  }
+
 render(){
   const teacherdata = {
   labels: this.state.quiznamelist,
@@ -152,14 +157,21 @@ datasets: [
   }
 ]
 };
-var result_container_list = this.state.resultslist.map((result_object)=>(
-  <div>{result_object.quizname}:{result_object.marks}</div>
-));
+if(this.state.resultslist){
+  var result_container_list = this.state.resultslist.map((result_object)=>(
+    <div>{result_object.quizname}:{result_object.marks?(result_object.marks):(0)}</div>
+  ));
+}
+
   return(
     <div >
     <h1>Course Results</h1>
     <div style={{height:"40%",width:"50%"}} >
     <Line data={this.state.userinfo.isTeacher?(teacherdata):(studentdata)} />
+
+    </div>
+    <div>
+      {this.state.userinfo.isTeacher?("-"):(this.predictedMarks(this.state.yourlist))}
     </div>
       {result_container_list}
     </div>

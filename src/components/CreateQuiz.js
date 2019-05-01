@@ -174,7 +174,7 @@ class CreateQuiz extends Component {
   handleStartTimeChange = e => {
     this.setState(
       {
-        starttime: e.target.value
+        starttime: e.target.value + "+05:30"
       },
       () => {
         console.log(this.state.starttime);
