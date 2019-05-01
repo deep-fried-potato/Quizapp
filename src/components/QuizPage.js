@@ -2,13 +2,6 @@ import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Pagination from "material-ui-flat-pagination";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -97,6 +90,7 @@ class SelectedListItem extends React.Component {
   state = {
     selectedIndex: 1,
     offset: 0,
+    limit: 2,
     quizname: "General Knowledge Quiz",
     qdata: [
       {
@@ -128,7 +122,6 @@ class SelectedListItem extends React.Component {
     open: false
   };
 
-  
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -136,7 +129,6 @@ class SelectedListItem extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
-
 
   componentDidMount = () => {
     var answers = this.state.answers;
@@ -162,6 +154,9 @@ class SelectedListItem extends React.Component {
         const qdata = res.data[0].qdata;
         this.setState({ quizname });
         this.setState({ qdata });
+        this.setState({
+          limit: this.state.qdata.length - 2
+        });
       });
   };
 
@@ -174,6 +169,7 @@ class SelectedListItem extends React.Component {
   };
 
   handleClick(e, offset) {
+    console.log(offset);
     this.setState({ offset });
   }
 
@@ -227,8 +223,8 @@ class SelectedListItem extends React.Component {
           style={{
             backgroundColor: "#212121",
             color: "#ffff",
-            float: 'right',
-            marginRight: '195px'
+            float: "right",
+            marginRight: "12.5%"
           }}
         >
           Submit Quiz
@@ -248,7 +244,9 @@ class SelectedListItem extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">No</Button>
+            <Button onClick={this.handleClose} color="primary">
+              No
+            </Button>
             <Button onClick={this.handleClose} href="/profile" color="primary">
               Yes
             </Button>
@@ -378,14 +376,19 @@ class SelectedListItem extends React.Component {
               float: "left"
             }}
             onClick={() => {
+              if(this.state.offset==0){
+                return 0
+              }
               this.setState({
                 offset: this.state.offset - 1
+              },()=>{
+                console.log(this.state.offset, this.state.limit)
               });
             }}
           >
             Previos Question
           </Button>
-          
+
           <Button
             variant="contained"
             style={{
@@ -395,8 +398,16 @@ class SelectedListItem extends React.Component {
               float: "right"
             }}
             onClick={() => {
+              console.log(this.state.offset, this.state.limit);
+              /* if(this.state.offset==this.state.limit){
+                return 0
+              } */
+              if (this.state.offset==this.state.limit)
+                return 0;
               this.setState({
                 offset: this.state.offset + 1
+              },()=>{
+                console.log('wow', this.state.offset, this.state.limit)
               });
             }}
           >
@@ -419,8 +430,8 @@ class SelectedListItem extends React.Component {
               total={this.state.qdata.length}
               onClick={(e, offset) => this.handleClick(e, offset)}
               style={{
-                marginTop: '-65px',
-                marginBottom: '20px'
+                marginTop: "-65px",
+                marginBottom: "20px"
               }}
             />
           </MuiThemeProvider>
