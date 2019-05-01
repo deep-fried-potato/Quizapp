@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -37,22 +38,12 @@ const styles = theme => ({
 
 class CreateQuiz extends Component {
   state = {
-    title: "",
-    quiz: [
-      {
-        id: 0,
-        question: "Something",
-        options: ["some", "thing", "to"],
-        answer: ""
-      },
-
-      {
-        id: 1,
-        question: "Something2",
-        options: ["some2", "thing2", "to2"],
-        answer: ""
-      }
-    ]
+    title: null,
+    quiz: [],
+    answers: [],
+    accesskey:"",
+    starttime:null,
+    endtime:null
   };
 
   componentDidMount() {
@@ -76,7 +67,7 @@ class CreateQuiz extends Component {
     console.log(totalQues);
     let sampleQuestion = {
       id: totalQues, // change id when adding question
-      question: "SomeQuestion",
+      questiontext: "SomeQuestion",
       options: ["A", "B"],
       answer: ""
     };
@@ -88,7 +79,7 @@ class CreateQuiz extends Component {
   handleAddOption = id => {
     console.log(
       id
-    ); /* 
+    ); /*
     var options = [...this.state.quiz[id].options, 'Another Option'];
     // options.push("Another Option");
     console.log(options);
@@ -104,16 +95,21 @@ class CreateQuiz extends Component {
   handleAnswerChange = e => {
     console.log(e.target.value, e.target, e.target.id);
     let quiz = this.state.quiz.slice();
-    quiz[e.target.name].answer = e.target.value;
+    quiz[e.target.name].answer = e.target.value
+    let answers = this.state.answers
+    answers[e.target.name] = this.state.quiz[e.target.name].options.findIndex(option => {
+      return option == e.target.value;
+    })
     this.setState({
-      quiz: quiz
+      quiz: quiz,
+      answers:answers
     });
   };
 
   handleQuestionChange = e => {
     console.log(e.target.value, e.target.id);
     let quiz = this.state.quiz.slice();
-    quiz[e.target.id].question = e.target.value;
+    quiz[e.target.id].questiontext = e.target.value;
     this.setState({
       quiz: quiz
     });
@@ -143,18 +139,69 @@ class CreateQuiz extends Component {
       }
     );
   };
+  handleAccesskeyChange = e => {
+    this.setState(
+      {
+        accesskey: e.target.value
+      },
+      () => {
+        console.log(this.state.accesskey);
+      }
+    );
+  };
+  handleStartTimeChange = e => {
+    this.setState(
+      {
+        starttime: e.target.value
+      },
+      () => {
+        console.log(this.state.starttime);
+      }
+    );
+  };
+  handleEndTimeChange = e => {
+    this.setState(
+      {
+        endtime: e.target.value+"+05:30"
+      },
+      () => {
+        console.log(this.state.endtime);
+      }
+    );
+  };
+  SendData = e =>{
+    console.log("Sending Data")
+    var token = localStorage.getItem("auth-token");
+    var config = {
+      headers:{'x-access-token':token}
+    }
+    var data = {
+      accesskey:this.state.accesskey,
+      quizname:this.state.title,
+      qdata:this.state.quiz,
+      answers:this.state.answers,
+      starttime:this.state.starttime,
+      endtime:this.state.endtime,
+      coursecid:this.props.match.params.courseid
+    }
+    axios.post("http://localhost:8000/quiz/createquiz",data,config).then(res=>{
+      console.log("Created Sccesfuly")
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
   render() {
     const { classes } = this.props;
     let num = 0;
     const data = this.state.quiz;
-    const question = data.map((dataElement, num) => (
+    const questiontext = data.map((dataElement, num) => (
       <div>
         <TextField
           id={num}
           onChange={this.handleQuestionChange}
           label={["Question", num + 1].join(" ")}
           multiline
-          defaultValue={dataElement.question}
+          defaultValue={dataElement.questiontext}
           rows="2"
           placeholder="What's an orange?"
           className={classes.textField}
@@ -191,7 +238,7 @@ class CreateQuiz extends Component {
                 {op}
               </MenuItem>
             ))}
-            {/* 
+            {/*
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem> */}
@@ -211,9 +258,9 @@ class CreateQuiz extends Component {
     ));
 
     {
-      /* 
+      /*
         <li id={num}>
-        {dataElement.question}
+        {dataElement.questiontext}
         <li>{dataElement.options}</li>
         </li> */
     }
@@ -230,11 +277,41 @@ class CreateQuiz extends Component {
           id="title"
           onChange={this.handleTitleChange}
           label="Quiz Title"
-          placeholder="General Knowledge Quiz - 1"
+          placeholder=""
           className={classes.title}
           margin="normal"
         />
-        {question}
+        <TextField
+          id="accesskey"
+          onChange={this.handleAccesskeyChange}
+          label="Accesskey"
+          placeholder=""
+          className={classes.title}
+          margin="normal"
+        /><br />
+        <TextField
+        id="Start Time"
+        label="Start Time"
+        type="datetime-local"
+        onChange={this.handleStartTimeChange}
+        defaultValue={null}
+        className={classes.title}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <TextField
+      id="End Time"
+      label="End Time"
+      type="datetime-local"
+      onChange={this.handleEndTimeChange}
+      defaultValue={null}
+      className={classes.title}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    />
+        {questiontext}
         {/* {this.quiz} */}
         {/* <TextField
           id="outlined-multiline-static"
@@ -253,6 +330,14 @@ class CreateQuiz extends Component {
           onClick={this.handleAddQuestion}
         >
           Add Question
+        </Button><br />
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={this.SendData}
+        >
+          Create Quiz
         </Button>
       </div>
     );

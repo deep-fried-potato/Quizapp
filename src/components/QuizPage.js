@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios"
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -60,11 +61,11 @@ class SelectedListItem extends React.Component {
   state = {
     selectedIndex: 1,
     offset: 0,
-    title: "General Knowledge Quiz",
-    qna: [
+    quizname: "General Knowledge Quiz",
+    qdata: [
       {
         id: "1",
-        question: "Which one is correct team name in NBA?",
+        questiontext: "Which one is correct team name in NBA?",
         options: [
           "New York Bulls",
           "Los Angeles Kings",
@@ -75,29 +76,40 @@ class SelectedListItem extends React.Component {
       },
       {
         id: "2",
-        question: "5 + 7 = ?",
+        questiontext: "5 + 7 = ?",
         options: ["10", "11", "12", "13"],
         answer: "12"
       },
       {
         id: "3",
-        question: "12 - 8 = ?",
+        questiontext: "12 - 8 = ?",
         options: ["1", "2", "3", "4"],
         answer: "4"
       }
     ],
-    answers: []
+    answers: [],
+    endtime:null
   };
 
   componentDidMount = () => {
     var answers = this.state.answers;
-    answers = Array(this.state.qna.length).map((value, index) => {
+    answers = Array(this.state.qdata.length).map((value, index) => {
       return "";
     });
     console.log(answers);
     this.setState({
       answers: answers
     });
+    var token = localStorage.getItem('auth-token');
+    var config = {
+      headers:{'x-access-token':token}
+    }
+    axios.get("http://localhost:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
+      const quizname = res.data[0].quizname
+      const qdata = res.data[0].qdata
+      this.setState({quizname})
+      this.setState({qdata})
+    })
   };
 
   handleListItemClick = (event, index) => {
@@ -113,16 +125,25 @@ class SelectedListItem extends React.Component {
   }
 
   handleChange = e => {
-    const options = this.state.qna[this.state.offset].options;
-    console.log(e.target.value);
-    console.log(this.state.answers);
+    const options = this.state.qdata[this.state.offset].options;
     //answer number
-    console.log(
-      options.findIndex(option => {
+    //SendAnswer
+    var token = localStorage.getItem('auth-token');
+    var config = {
+      headers:{'x-access-token':token}
+    }
+    var data={
+      quizid:parseInt(this.props.match.params.quizid),
+      question:this.state.offset,
+      answer:options.findIndex(option => {
         return option == e.target.value;
-      }),
-      this.state.offset
-    );
+      })
+    }
+    console.log(data)
+    axios.post("http://localhost:8000/quiz/sendAnswer",data,config).then(res=>{
+      console.log(res)
+    })
+
     var answer = e.target.value;
     var ansNo = options.findIndex(option => {
       return option == e.target.value;
@@ -139,9 +160,9 @@ class SelectedListItem extends React.Component {
   render() {
     const { classes } = this.props;
     const questionNum = this.state.offset;
-    const question = this.state.qna[this.state.offset].question;
-    console.log(question);
-    const options = this.state.qna[this.state.offset].options;
+    const questiontext = this.state.qdata[this.state.offset].questiontext;
+    console.log(questiontext);
+    const options = this.state.qdata[this.state.offset].options;
     console.log(options);
     var id = 0;
     const optionList = (
@@ -169,7 +190,7 @@ class SelectedListItem extends React.Component {
           console.log(questionNum, event.target.id);
         }}
       >
-        {/* 
+        {/*
         <ListItem
           id={id}
           button
@@ -203,7 +224,7 @@ class SelectedListItem extends React.Component {
             fontSize: "16px"
           }}
         >
-          {this.state.title}
+          {this.state.quizname}
         </Typography>
         <div className={classes.outsidePaper}>
           <Paper className={classes.paper} elevation={1}>
@@ -215,7 +236,7 @@ class SelectedListItem extends React.Component {
                 paddingBottom: "5%"
               }}
             >
-              {question}
+              {questiontext}
             </Typography>
           </Paper>
         </div>
@@ -243,7 +264,7 @@ class SelectedListItem extends React.Component {
             <Pagination
               limit={1}
               offset={this.state.offset}
-              total={this.state.qna.length}
+              total={this.state.qdata.length}
               onClick={(e, offset) => this.handleClick(e, offset)}
             />
           </MuiThemeProvider>

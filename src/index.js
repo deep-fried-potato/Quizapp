@@ -36,8 +36,8 @@ class App extends React.Component {
           </div>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/quiz" component={QuizPage} />
-          <Route exact path="/createquiz" component={CreateQuiz} />
+          <Route exact path="/quiz/:quizid" component={QuizPage} />
+          <Route exact path="/createquiz/:courseid" component={CreateQuiz} />
           <Route path="/quizresults/:quizid" component={QuizResults} />
           <Route exact path="/profile/" component={Profile} />
           <Route path="/courses/:cid" component={CoursePage} />
