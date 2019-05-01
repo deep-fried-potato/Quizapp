@@ -17,7 +17,7 @@ class StartQuizPage extends React.Component{
       accesskey:this.refs.accesskey.value,
       quizid:this.props.match.params.quizid
     }
-    axios.post("http://localhost:8000/quiz/startquiz",data,config).then(res=>{
+    axios.post("http://10.0.36.104:8000/quiz/startquiz",data,config).then(res=>{
       const status_box_text="Quiz Started.You may take the quiz"
       const quizstarted = true
       this.setState({status_box_text})
@@ -32,11 +32,11 @@ class StartQuizPage extends React.Component{
     var config = {
       headers:{'x-access-token':token}
     }
-    axios.get("http://localhost:8000/api/auth/me",config).then(res=>{
+    axios.get("http://10.0.36.104:8000/api/auth/me",config).then(res=>{
       const userinfo = res.data[0]
       this.setState({userinfo})
     })
-    axios.get("http://localhost:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
+    axios.get("http://10.0.36.104:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
       const quizdata = res.data[0]
       this.setState({quizdata})
     })

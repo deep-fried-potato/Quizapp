@@ -32,11 +32,11 @@ class QuizResults extends React.Component{
     var config={
       headers:{'x-access-token':token}
     };
-    axios.get(`http://localhost:8000/quiz/quizresults/`+this.props.match.params.quizid,config).then(res=>{
+    axios.get(`http://10.0.36.104:8000/quiz/quizresults/`+this.props.match.params.quizid,config).then(res=>{
       const resultlist = res.data
       this.setState({resultlist})
     })
-    axios.get(`http://localhost:8000/quiz/quizmarksall/`+this.props.match.params.quizid,config).then(res=>{
+    axios.get(`http://10.0.36.104:8000/quiz/quizmarksall/`+this.props.match.params.quizid,config).then(res=>{
       const markslist = res.data
       this.setState({markslist})
       console.log(markslist)

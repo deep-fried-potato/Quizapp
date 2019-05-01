@@ -144,12 +144,15 @@ class SelectedListItem extends React.Component {
     const options = this.state.qna[this.state.offset].options;
     console.log(options);
     var id = 0;
+    const answer = this.state.answers[this.state.offset]
+    console.log('offset', this.state.offset, "asnwer",  this.state.answers[this.state.offset])
     const optionList = (
       <RadioGroup
         aria-label="Gender"
         name="gender1"
         className={classes.group}
-        value={this.state.answers[this.state.offset]}
+        // value='Golden State Warriros'
+        value={answer}
         onChange={this.handleChange}
       >
         {options.map((op, opNum) => (
