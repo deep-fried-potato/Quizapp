@@ -104,7 +104,7 @@ class SelectedListItem extends React.Component {
     var config = {
       headers:{'x-access-token':token}
     }
-    axios.get("http://localhost:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
+    axios.get("http://10.0.36.104:8000/quiz/getquiz/"+this.props.match.params.quizid,config).then(res=>{
       const quizname = res.data[0].quizname
       const qdata = res.data[0].qdata
       this.setState({quizname})
@@ -140,7 +140,7 @@ class SelectedListItem extends React.Component {
       })
     }
     console.log(data)
-    axios.post("http://localhost:8000/quiz/sendAnswer",data,config).then(res=>{
+    axios.post("http://10.0.36.104:8000/quiz/sendAnswer",data,config).then(res=>{
       console.log(res)
     })
 

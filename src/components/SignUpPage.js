@@ -85,7 +85,7 @@ class SignUpPage extends React.Component {
   };
 
   register = () => {
-    const url = "http://localhost:8000/api/auth/register";
+    const url = "http://10.0.36.104:8000/api/auth/register";
     var self = this;
     axios
       .post(url, this.state.user)

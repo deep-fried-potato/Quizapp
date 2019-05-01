@@ -47,7 +47,7 @@ class JoinCourse extends React.Component{
     var data ={
       joinKey:this.refs.joinKey.value
     }
-    axios.post("http://localhost:8000/course/joincourse",data,config).then(res=>{
+    axios.post("http://10.0.36.104:8000/course/joincourse",data,config).then(res=>{
       const status_box_text = "Course has been added"
       console.log(res)
       this.setState({status_box_text,
