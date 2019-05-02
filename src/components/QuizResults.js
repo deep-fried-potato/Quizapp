@@ -59,7 +59,7 @@ class QuizResults extends React.Component {
       )
       .then(res => {
         var resultlist = res.data;
-        this.setState({ resultlist });
+        if(resultlist[0]) this.setState({ resultlist });
         console.log(resultlist);
       });
     axios
