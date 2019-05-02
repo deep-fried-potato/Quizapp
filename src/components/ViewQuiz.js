@@ -112,11 +112,9 @@ class QuizInfo extends React.Component {
   };
 
   handleClick = (e, offset) => {
-    if (this.state.offset != this.state.limit) {
-      this.setState({
-        offset: offset
-      });
-    }
+    this.setState({
+      offset: offset
+    });
   };
 
   componentDidMount() {
@@ -228,42 +226,6 @@ class QuizInfo extends React.Component {
           }}
         >
           <Paper style={{ color: "#fff" }}>{optionList}</Paper>
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "#212121",
-              color: "#ffff",
-              marginTop: "20px",
-              float: "left"
-            }}
-            onClick={() => {
-              if (this.state.offset == 0) return 0;
-              this.setState({
-                offset: this.state.offset - 1
-              });
-            }}
-          >
-            Previous Question
-          </Button>
-
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "#212121",
-              color: "#ffff",
-              marginTop: "20px",
-              float: "right"
-            }}
-            onClick={() => {
-              console.log(this.state.offset, this.state.limit);
-              if (this.state.offset == this.state.limit) return 0;
-              this.setState({
-                offset: this.state.offset + 1
-              });
-            }}
-          >
-            Next Question
-          </Button>
         </div>
         <div
           style={{
