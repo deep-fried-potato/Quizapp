@@ -10,6 +10,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import fileDownload from "js-file-download";
 
 const styles = theme => ({
   root: {
@@ -33,8 +35,8 @@ class CourseResultContainer extends React.Component {
 
   componentDidMount() {
     const { quizid } = this.props.match.params;
-    var pagetitle = document.getElementById('pagetitle');
-    pagetitle.innerHTML = 'Course Results'
+    var pagetitle = document.getElementById("pagetitle");
+    pagetitle.innerHTML = "Course Results";
     var token = localStorage.getItem("auth-token");
     var config = {
       headers: { "x-access-token": token }
@@ -67,6 +69,22 @@ class CourseResultContainer extends React.Component {
     var pred =
       2 * yourlist[yourlist.length - 1] - yourlist[yourlist.length - 2];
     return "Predicted Marks: " + pred;
+  };
+
+  handleDownload = () => {
+    var token = localStorage.getItem("auth-token");
+    var config = {
+      headers: { "x-access-token": token }
+    };
+    axios
+      .get(
+        "http://10.0.36.104:8000/course/getCSV/" +
+          this.props.match.params.courseid,
+        config
+      )
+      .then(res => {
+        fileDownload(res.data, 'result.csv');
+      });
   };
 
   render() {
@@ -202,8 +220,8 @@ class CourseResultContainer extends React.Component {
                   <TableCell component="th" scope="row">
                     {result_object.quizname}
                   </TableCell>
-                  <TableCell component="th" scope="row" align='right'>
-                    {result_object.marks? result_object.marks: 0}
+                  <TableCell component="th" scope="row" align="right">
+                    {result_object.marks ? result_object.marks : 0}
                   </TableCell>
                 </TableRow>
               ))}
@@ -224,6 +242,7 @@ class CourseResultContainer extends React.Component {
           marginLeft: "-20px"
         }}
       >
+        <div />
         <Typography
           component="h2"
           variant="display1"
@@ -235,6 +254,7 @@ class CourseResultContainer extends React.Component {
         >
           Course Results
         </Typography>
+
         <div
           style={{
             width: "65%",
@@ -247,20 +267,32 @@ class CourseResultContainer extends React.Component {
             data={this.state.userinfo.isTeacher ? teacherdata : studentdata}
           />
           <div>
-          <Typography
-            component="h2"
-            variant="display1"
-            gutterBottom
-            style={{
-              paddingTop: "5%",
-              paddingBottom: "3%",
-              fontSize: '24px'
-            }}
-          >
-            {this.state.userinfo.isTeacher
-              ? "-"
-              : this.predictedMarks(this.state.yourlist)}
-          </Typography>
+            <Typography
+              component="h2"
+              variant="display1"
+              gutterBottom
+              style={{
+                paddingTop: "5%",
+                paddingBottom: "3%",
+                fontSize: "24px"
+              }}
+            >
+              {this.state.userinfo.isTeacher
+                ? "-"
+                : this.predictedMarks(this.state.yourlist)}
+            </Typography>
+
+            <Button
+              variant="contained"
+              onClick={this.handleDownload}
+              style={{
+                backgroundColor: "#212121",
+                color: "#fff",
+                float: "center"
+              }}
+            >
+              Download CSV
+            </Button>
           </div>
           {result_container_list}
         </div>
