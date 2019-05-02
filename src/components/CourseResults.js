@@ -30,8 +30,20 @@ class CourseResultContainer extends React.Component {
     highestlist: [],
     quiznamelist: [],
     yourlist: [1, 2, 3, 4, 5],
-    resultslist: []
+    resultslist: [],
+    kmeansdata:[]
   };
+
+  kmeans = ()=>{
+    var token = localStorage.getItem("auth-token");
+    var config = {
+      headers: { "x-access-token": token }
+    };
+    axios.post("http://10.0.36.104:8000/course/getclusters",{courseid:this.props.match.params.courseid},config).then(res=>{
+      const kmeansdata = res.data
+      this.setState({kmeansdata})
+    })
+  }
 
   componentDidMount() {
     const { quizid } = this.props.match.params;
@@ -63,6 +75,7 @@ class CourseResultContainer extends React.Component {
         this.setState({ quiznamelist });
         this.setState({ yourlist });
         this.setState({ resultslist });
+        if(this.state.userinfo.isTeacher) this.kmeans()
       });
   }
   predictedMarks = yourlist => {
@@ -230,6 +243,38 @@ class CourseResultContainer extends React.Component {
         </Paper>
       );
     }
+    if(this.state.userinfo.isTeacher){
+      console.log(this.state.kmeansdata)
+      var kmeans_list =  (
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Student ID</TableCell>
+                <TableCell align="center">grade</TableCell>
+                <TableCell align="right">Marks</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {Object.keys(this.state.kmeansdata).map(idx=>(
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  {idx}
+                </TableCell>
+                <TableCell component="th" scope="row" align='center'>
+                  {this.state.kmeansdata[idx].grade}
+                </TableCell>
+                <TableCell component="th" scope="row" align='right'>
+                  {this.state.kmeansdata[idx].marks}
+                </TableCell>
+              </TableRow>
+            ))}
+
+            </TableBody>
+          </Table>
+        </Paper>
+      );
+    }
 
     return (
       <div
@@ -267,6 +312,7 @@ class CourseResultContainer extends React.Component {
             data={this.state.userinfo.isTeacher ? teacherdata : studentdata}
           />
           <div>
+
             <Typography
               component="h2"
               variant="display1"
@@ -293,8 +339,25 @@ class CourseResultContainer extends React.Component {
             >
               Download CSV
             </Button>
+
+          <Typography
+            component="h2"
+            variant="display1"
+            gutterBottom
+            style={{
+              paddingTop: "5%",
+              paddingBottom: "3%",
+              fontSize: '24px'
+            }}
+          >
+            {this.state.userinfo.isTeacher
+              ? "K-Means Clustered Marks"
+              : this.predictedMarks(this.state.yourlist)}
+          </Typography>
+
           </div>
           {result_container_list}
+          {kmeans_list}
         </div>
       </div>
     );
