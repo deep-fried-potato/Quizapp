@@ -5,6 +5,14 @@ import ResultContainer from "./ResultContainer";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+
 
 const styles = theme => ({
   card: {
@@ -37,6 +45,14 @@ class QuizResults extends React.Component {
     teacherdata: [],
     userinfo: []
   };
+
+  getPercentile(markslist, current_mark) {
+    var lessThanCurrent = 0;
+    for (var mark in markslist) {
+      if (current_mark > mark) lessThanCurrent += 1;
+    }
+    return (lessThanCurrent / markslist.length) * 100;
+  }
 
   componentDidMount() {
     const { quizid } = this.props.match.params;
@@ -75,6 +91,7 @@ class QuizResults extends React.Component {
       });
   }
   render() {
+    const {classes} = this.props;
     const studentdata = {
       labels: ["Your Score", "Class Average", "Highest", "Lowest"],
       datasets: [
@@ -114,6 +131,45 @@ class QuizResults extends React.Component {
         }
       ]
     };
+    // var result_container_list = (
+    //   <Paper className={classes.root}>
+    //     <Table className={classes.table}>
+    //       <TableHead>
+    //         <TableRow>
+    //           <TableCell>Username</TableCell>
+    //           <TableCell align="right">Email</TableCell>
+    //           <TableCell align="right">Marks</TableCell>
+    //           <TableCell align="right">Response</TableCell>
+    //           <TableCell align="right">Percentile</TableCell>
+    //         </TableRow>
+    //       </TableHead>
+    //       <TableBody>
+    //         {this.state.resultslist.map(result_object => (
+    //           <TableRow>
+    //             <TableCell component="th" scope="row">
+    //               {result_object.username}
+    //             </TableCell>
+    //             <TableCell component="th" scope="row" align="right">
+    //               {result_object.email}
+    //             </TableCell>
+    //             <TableCell component="th" scope="row" align="right">
+    //               {result_object.marks ? result_object.marks : 0}
+    //             </TableCell>
+    //             <TableCell component="th" scope="row" align="right">
+    //               {result_object.response}
+    //             </TableCell>
+    //             <TableCell component="th" scope="row" align="right">
+    //             {this.getPercentile(
+    //               this.props.markslist,
+    //               this.props.data.marks
+    //             )}
+    //             </TableCell>
+    //           </TableRow>
+    //         ))}
+    //       </TableBody>
+    //     </Table>
+    //   </Paper>
+    // );
     var result_container_list = this.state.resultlist.map(result_object => (
       <span>
         <ResultContainer

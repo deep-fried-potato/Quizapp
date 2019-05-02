@@ -185,6 +185,18 @@ class Course extends React.Component {
                 Create New Quiz
               </Button>
             ) : null}
+            {this.state.userinfo.isTeacher ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                href={"/PdfUpload/" + this.state.courseinfo.cid}
+                style={{
+                  float:'center',
+                }}
+              >
+                Add Quiz from PDF
+              </Button>
+            ) : null}
             <Button
                 variant="contained"
                 color="secondary"
